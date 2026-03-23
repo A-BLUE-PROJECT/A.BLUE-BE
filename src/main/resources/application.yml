@@ -1,10 +1,12 @@
 spring:
   application:
-    name: dekk-was-server
+    name: allblue-was-server
   profiles:
     active: dev
 
   jpa:
+    hibernate:
+      ddl-auto: create
     properties:
       hibernate:
         default_batch_fetch_size: 30
@@ -45,3 +47,9 @@ management:
 worker:
   n8n:
     webhook-url: ${N8N_WEBHOOK_URL:http://localhost:5678/webhook/outfit-filter}
+
+cafe24:
+  client-id: ${CAFE24_CLIENT_ID:your-client-id}
+  client-secret: ${CAFE24_CLIENT_SECRET:your-client-secret}
+  redirect-uri: ${CAFE24_REDIRECT_URI:http://localhost:8080/s/v1/oauth/callback}
+  scopes: ${CAFE24_SCOPES:mall.read_product,mall.write_product,mall.read_order,mall.read_customer}

@@ -2,12 +2,11 @@ plugins {
     id 'java'
     id 'org.springframework.boot' version '3.5.11'
     id 'io.spring.dependency-management' version '1.1.7'
-    id "com.diffplug.spotless" version "8.3.0"
 }
 
-group = 'com.dekk'
+group = 'com.allblue'
 version = '0.0.1'
-description = 'DEKK project for Spring Boot'
+description = 'ALLBLUE project for Spring Boot'
 
 java {
     toolchain {
@@ -21,18 +20,8 @@ configurations {
     }
 }
 
-spotless {
-    java {
-        target 'src/main/java/**/*.java'
-
-        removeUnusedImports()   // 사용하지 않는 import문 자동 삭제
-        importOrder('java', 'javax', 'org', 'com', '')
-
-        palantirJavaFormat()
-
-        trimTrailingWhitespace() // 문장 끝 불필요한 공백 제거
-        endWithNewline()        // 파일 끝에 빈 줄 추가 (Git 관리 표준)
-    }
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8'
 }
 
 tasks.named('jar') {
@@ -67,8 +56,6 @@ dependencies {
     testImplementation 'com.h2database:h2'
     implementation 'org.springframework.boot:spring-boot-starter-data-redis'
     implementation 'org.redisson:redisson-spring-boot-starter:3.27.0'
-    implementation 'org.flywaydb:flyway-core'
-    implementation 'org.flywaydb:flyway-database-postgresql'
 }
 
 tasks.named('test') {

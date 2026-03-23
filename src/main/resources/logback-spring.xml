@@ -104,7 +104,7 @@
             <appender-ref ref="ASYNC_ERROR_FILE" />
             <appender-ref ref="LOKI"/>
         </root>
-        <logger name="com.dekk" level="DEBUG" />
+        <logger name="com.allblue" level="DEBUG" />
         <logger name="CRAWL" level="WARN" additivity="false">
             <appender-ref ref="ASYNC_CRAWL_FILE" />
             <appender-ref ref="CONSOLE" />
@@ -135,7 +135,7 @@
             <appender-ref ref="ASYNC_ERROR_FILE" />
             <appender-ref ref="LOKI"/>
         </root>
-        <logger name="com.dekk" level="INFO" />
+        <logger name="com.allblue" level="INFO" />
         <logger name="CRAWL" level="WARN" additivity="false">
             <appender-ref ref="ASYNC_CRAWL_FILE" />
             <appender-ref ref="CONSOLE" />
