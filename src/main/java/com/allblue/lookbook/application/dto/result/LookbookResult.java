@@ -13,7 +13,8 @@ public record LookbookResult(
         TargetGender targetGender,
         String tags,
         LookbookStatus status,
-        String imageUrl) {
+        String imageUrl,
+        Integer aiScore) {
 
     public static LookbookResult from(Lookbook lookbook) {
         String imageUrl = lookbook.getLookbookImage() != null
@@ -26,6 +27,7 @@ public record LookbookResult(
                 lookbook.getTargetGender(),
                 lookbook.getTags(),
                 lookbook.getStatus(),
-                imageUrl);
+                imageUrl,
+                lookbook.getAiScore());
     }
 }

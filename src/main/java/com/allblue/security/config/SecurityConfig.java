@@ -51,7 +51,9 @@ public class SecurityConfig {
                                 "/v3/api-docs",
                                 "/actuator/**",
                                 "/i/v1/inspections/**",
-                                "/w/v1/auth/refresh")
+                                "/w/v1/auth/refresh",
+                                "/w/v1/lookbooks",
+                                "/w/v1/lookbooks/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())

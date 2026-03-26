@@ -13,7 +13,8 @@ public record LookbookResponse(
         TargetGender targetGender,
         String tags,
         LookbookStatus status,
-        String imageUrl) {
+        String imageUrl,
+        Integer aiScore) {
 
     public static LookbookResponse from(LookbookResult result) {
         return new LookbookResponse(
@@ -23,6 +24,7 @@ public record LookbookResponse(
                 result.targetGender(),
                 result.tags(),
                 result.status(),
-                result.imageUrl());
+                result.imageUrl(),
+                result.aiScore());
     }
 }
