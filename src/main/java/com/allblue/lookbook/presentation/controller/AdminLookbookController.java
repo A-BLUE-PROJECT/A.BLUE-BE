@@ -5,17 +5,20 @@ import com.allblue.admin.security.AdminUserDetails;
 import com.allblue.common.response.ApiResponse;
 import com.allblue.lookbook.application.LookbookCommandService;
 import com.allblue.lookbook.application.LookbookQueryService;
-import com.allblue.lookbook.application.dto.query.LookbookSearchQuery;
 import com.allblue.lookbook.presentation.response.LookbookResponse;
 import com.allblue.lookbook.presentation.response.LookbookResultCode;
 import java.util.List;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
+import com.allblue.lookbook.presentation.request.LookbookGenerateRequest;
+import jakarta.validation.Valid;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PatchMapping;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -29,10 +32,18 @@ public class AdminLookbookController implements AdminLookbookApi {
     private final AdminInspectionCommandService adminInspectionCommandService;
 
     @Override
+    @PostMapping("/generate")
+    public ResponseEntity<ApiResponse<Long>> generate(@Valid @RequestBody LookbookGenerateRequest request) {
+        Long lookbookId = lookbookCommandService.generate(request.toCommand());
+        return ResponseEntity
+                .status(LookbookResultCode.LOOKBOOK_GENERATE_ACCEPTED.status())
+                .body(ApiResponse.of(LookbookResultCode.LOOKBOOK_GENERATE_ACCEPTED, lookbookId));
+    }
+
+    @Override
     @GetMapping
     public ResponseEntity<ApiResponse<List<LookbookResponse>>> findAll() {
-        LookbookSearchQuery query = new LookbookSearchQuery(null, null, null, null, Integer.MAX_VALUE);
-        List<LookbookResponse> response = lookbookQueryService.findAll(query).stream()
+        List<LookbookResponse> response = lookbookQueryService.findAllForAdmin().stream()
                 .map(LookbookResponse::from)
                 .toList();
         return ResponseEntity

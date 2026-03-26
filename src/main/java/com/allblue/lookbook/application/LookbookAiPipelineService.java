@@ -59,7 +59,8 @@ public class LookbookAiPipelineService {
                 lookbook.getId(),
                 lookbook.getStyleType().name(),
                 lookbook.getSeason().name(),
-                lookbook.getTargetGender().name(),
+                lookbook.getTargetGender() != null ? lookbook.getTargetGender().name() : null,
+                null,
                 productInfos
         );
 

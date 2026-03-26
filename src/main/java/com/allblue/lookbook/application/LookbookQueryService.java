@@ -31,6 +31,12 @@ public class LookbookQueryService {
                 .toList();
     }
 
+    public List<LookbookResult> findAllForAdmin() {
+        return lookbookRepository.findAll().stream()
+                .map(LookbookResult::from)
+                .toList();
+    }
+
     public LookbookDetailResult findById(Long lookbookId) {
         Lookbook lookbook = lookbookRepository.findById(lookbookId)
                 .orElseThrow(() -> new LookbookBusinessException(LookbookErrorCode.LOOKBOOK_NOT_FOUND));

@@ -7,6 +7,7 @@ public record AiWorkerPayload(
         String styleType,
         String season,
         String targetGender,
+        String prompt,
         List<ProductInfo> products
 ) {
     public record ProductInfo(

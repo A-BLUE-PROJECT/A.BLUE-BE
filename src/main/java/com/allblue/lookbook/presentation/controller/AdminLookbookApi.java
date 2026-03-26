@@ -2,6 +2,7 @@ package com.allblue.lookbook.presentation.controller;
 
 import com.allblue.admin.security.AdminUserDetails;
 import com.allblue.common.response.ApiResponse;
+import com.allblue.lookbook.presentation.request.LookbookGenerateRequest;
 import com.allblue.lookbook.presentation.response.LookbookResponse;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -10,9 +11,13 @@ import java.util.List;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RequestBody;
 
 @Tag(name = "Admin Lookbook API", description = "룩북 어드민 API")
 public interface AdminLookbookApi {
+
+    @Operation(summary = "AI 룩북 생성 요청", description = "룩북 생성을 AI 워커에 비동기로 요청합니다. lookbookId를 즉시 반환합니다.")
+    ResponseEntity<ApiResponse<Long>> generate(@RequestBody LookbookGenerateRequest request);
 
     @Operation(summary = "전체 룩북 목록 조회", description = "모든 상태의 룩북 목록을 조회합니다.")
     ResponseEntity<ApiResponse<List<LookbookResponse>>> findAll();
