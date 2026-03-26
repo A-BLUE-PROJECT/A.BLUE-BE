@@ -5,6 +5,10 @@ import com.allblue.admin.application.dto.command.InspectionStatusUpdateCommand;
 import com.allblue.admin.domain.model.ImageInspection;
 import com.allblue.admin.domain.model.InspectionStatus;
 import com.allblue.admin.domain.repository.ImageInspectionRepository;
+import com.allblue.lookbook.domain.exception.LookbookBusinessException;
+import com.allblue.lookbook.domain.exception.LookbookErrorCode;
+import com.allblue.lookbook.domain.model.Lookbook;
+import com.allblue.lookbook.domain.repository.LookbookRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class AdminInspectionCommandService {
 
     private final ImageInspectionRepository imageInspectionRepository;
+    private final LookbookRepository lookbookRepository;
 
     @Transactional
     public void processInspectionCallback(InspectionCallbackCommand command) {
@@ -31,11 +36,19 @@ public class AdminInspectionCommandService {
     public void approveByLookbookId(Long lookbookId, Long adminId) {
         ImageInspection inspection = imageInspectionRepository.getByLookbookId(lookbookId);
         inspection.updateAdminStatus(InspectionStatus.ADMIN_APPROVED, adminId);
+
+        Lookbook lookbook = lookbookRepository.findById(lookbookId)
+                .orElseThrow(() -> new LookbookBusinessException(LookbookErrorCode.LOOKBOOK_NOT_FOUND));
+        lookbook.approve();
     }
 
     @Transactional
     public void rejectByLookbookId(Long lookbookId, Long adminId) {
         ImageInspection inspection = imageInspectionRepository.getByLookbookId(lookbookId);
         inspection.updateAdminStatus(InspectionStatus.ADMIN_REJECTED, adminId);
+
+        Lookbook lookbook = lookbookRepository.findById(lookbookId)
+                .orElseThrow(() -> new LookbookBusinessException(LookbookErrorCode.LOOKBOOK_NOT_FOUND));
+        lookbook.reject();
     }
 }

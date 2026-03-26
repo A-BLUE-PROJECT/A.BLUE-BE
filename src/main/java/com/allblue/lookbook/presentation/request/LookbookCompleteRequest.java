@@ -6,9 +6,10 @@ import jakarta.validation.constraints.NotNull;
 
 public record LookbookCompleteRequest(
         @NotBlank String originUrl,
-        @NotBlank String imageUrl) {
+        @NotBlank String imageUrl,
+        Integer aiScore) {
 
     public LookbookCompleteCommand toCommand(@NotNull Long lookbookId) {
-        return new LookbookCompleteCommand(lookbookId, originUrl, imageUrl);
+        return new LookbookCompleteCommand(lookbookId, originUrl, imageUrl, aiScore);
     }
 }

@@ -20,14 +20,38 @@ com.allblue
 
 ---
 
+## Code Generation Rules
+
+> **코드를 생성하기 전에 반드시 아래 문서들을 참고한다.**
+
+| 문서 | 참고 시점 |
+| :--- | :--- |
+| `docs/architecture/CONVENTIONS.md` | 모든 코드 생성 시 (Entity, DTO, Service, Controller 등) |
+| `docs/architecture/ARCHITECTURE.md` | 도메인 모델·플로우·URL 설계 시 |
+| `docs/design/SERVICE_DESIGN.md` | 기능 기획 확인 시 |
+| `docs/frontend/PLAN_*.md` | Milestone별 구현 시 |
+
+### 코드 출력 전 Self-Critique Checklist
+
+- [ ] `docs/architecture/CONVENTIONS.md` 의 규칙을 전부 확인했는가?
+- [ ] Entity에 `@Builder` / `@Setter` / `@Data` 없는가?
+- [ ] Controller에 비즈니스 로직 없는가?
+- [ ] Swagger 어노테이션이 `...Api` 인터페이스에만 있는가?
+- [ ] 예외가 `[Domain]BusinessException` + `[Domain]ErrorCode` 계층을 따르는가?
+- [ ] Result Code는 `S`로, Error Code는 `E`로 시작하는가? (혼용 금지)
+- [ ] 목록 응답에 `PageResponse` 사용했는가?
+- [ ] Phase 승인 없이 다음 단계로 진행하려 하는가? → 멈추고 승인 요청
+
+---
+
 ## Key Constraints (요약)
 
-상세 규칙 → `docs/CONVENTIONS.md`
+상세 규칙 → `docs/architecture/CONVENTIONS.md`
 
 1. Entity: `@Getter` + `@NoArgsConstructor(PROTECTED)` + `create()` 팩토리만. `@Setter/@Builder/@Data` 금지.
 2. DI: `@RequiredArgsConstructor` + `private final`. `@Autowired` 금지.
 3. DTO: 모두 `record`.
-4. Exception: `[Domain]BusinessException` + `[Domain]ErrorCode` 필수.
+4. Exception: `[Domain]BusinessException` + `[Domain]ErrorCode` 필수. ResultCode(`S`)와 ErrorCode(`E`) 혼용 금지.
 5. Response: `ApiResponse<T>` 래핑. 목록은 `PageResponse`.
 6. API Path: `/w/v1/[domain]` (유저) · `/i/v1/[domain]` (내부) · `/adm/v1/[domain]` (어드민) · `/s/v1/[domain]` (셀러)
 7. Result Code: `[S/E][Domain][HTTP][Seq2]` 형식 (예: `SLB20001`, `ESL40001`)

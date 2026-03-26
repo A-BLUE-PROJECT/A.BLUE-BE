@@ -1,5 +1,7 @@
 package com.allblue.lookbook.application;
 
+import com.allblue.admin.domain.model.ImageInspection;
+import com.allblue.admin.domain.repository.ImageInspectionRepository;
 import com.allblue.lookbook.application.dto.command.LookbookCompleteCommand;
 import com.allblue.lookbook.application.dto.command.LookbookCreateCommand;
 import com.allblue.lookbook.domain.exception.LookbookBusinessException;
@@ -16,6 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 public class LookbookCommandService {
 
     private final LookbookRepository lookbookRepository;
+    private final ImageInspectionRepository imageInspectionRepository;
 
     public Long create(LookbookCreateCommand command) {
         Lookbook lookbook = Lookbook.create(
@@ -30,7 +33,12 @@ public class LookbookCommandService {
     public void complete(LookbookCompleteCommand command) {
         Lookbook lookbook = lookbookRepository.findById(command.lookbookId())
                 .orElseThrow(() -> new LookbookBusinessException(LookbookErrorCode.LOOKBOOK_NOT_FOUND));
-        lookbook.complete(command.originUrl(), command.imageUrl());
+        lookbook.complete(command.originUrl(), command.imageUrl(), command.aiScore());
+
+        Lookbook saved = lookbookRepository.save(lookbook);
+        Long lookbookImageId = saved.getLookbookImage().getId();
+        ImageInspection inspection = ImageInspection.create(lookbookImageId, command.imageUrl());
+        imageInspectionRepository.save(inspection);
     }
 
     public void fail(Long lookbookId) {

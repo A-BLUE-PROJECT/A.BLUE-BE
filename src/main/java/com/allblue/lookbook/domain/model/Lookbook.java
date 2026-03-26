@@ -61,6 +61,9 @@ public class Lookbook extends BaseTimeEntity {
     @Column(name = "status", nullable = false)
     private LookbookStatus status;
 
+    @Column(name = "ai_score")
+    private Integer aiScore;
+
     @OneToOne(mappedBy = "lookbook", cascade = CascadeType.ALL, orphanRemoval = true)
     private LookbookImage lookbookImage;
 
@@ -88,15 +91,30 @@ public class Lookbook extends BaseTimeEntity {
         return lookbook;
     }
 
-    public void complete(String originUrl, String imageUrl) {
+    public void complete(String originUrl, String imageUrl, Integer aiScore) {
         validateStatusIsPending();
         this.lookbookImage = LookbookImage.create(this, originUrl, imageUrl);
         this.status = LookbookStatus.COMPLETED;
+        this.aiScore = aiScore;
     }
 
     public void fail() {
         validateStatusIsPending();
         this.status = LookbookStatus.FAILED;
+    }
+
+    public void approve() {
+        if (this.status != LookbookStatus.COMPLETED) {
+            throw new LookbookBusinessException(LookbookErrorCode.LOOKBOOK_STATUS_NOT_COMPLETED);
+        }
+        this.status = LookbookStatus.APPROVED;
+    }
+
+    public void reject() {
+        if (this.status != LookbookStatus.COMPLETED) {
+            throw new LookbookBusinessException(LookbookErrorCode.LOOKBOOK_STATUS_NOT_COMPLETED);
+        }
+        this.status = LookbookStatus.REJECTED;
     }
 
     private void validateStatusIsPending() {
