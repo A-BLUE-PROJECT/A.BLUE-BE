@@ -7,16 +7,14 @@
 
 ```
 com.allblue
-├── seller      # 카페24 OAuth 연동, Access Token 관리
-├── product     # 독립 상품 엔티티, 카페24 상품 동기화
+├── seller      # 카페24 OAuth 연동, Access Token 관리 (Phase 3)
+├── product     # 독립 상품 엔티티 (MVP는 더미 데이터)
 ├── lookbook    # AI 룩북 핵심 도메인 (Lookbook / LookbookItem / LookbookImage)
-├── user        # 사용자 + FitProfile
-├── admin       # 어드민 (룩북 검수)
+├── user        # 사용자 (Profile 포함, FitProfile 제거됨)
+├── admin       # 어드민 인증 + 룩북 검수 (ImageInspection)
 ├── auth        # JWT / OAuth2 인증
-├── activelog   # 스와이프 로그
 ├── category    # 카테고리 정규화 (TOP/BOTTOM/SHOES/OUTER/ACC)
 ├── common      # BaseTimeEntity, ApiResponse, PageResponse, BusinessException
-├── global      # 글로벌 설정
 └── security    # Spring Security 설정
 ```
 
@@ -31,8 +29,15 @@ com.allblue
 3. DTO: 모두 `record`.
 4. Exception: `[Domain]BusinessException` + `[Domain]ErrorCode` 필수.
 5. Response: `ApiResponse<T>` 래핑. 목록은 `PageResponse`.
-6. API Path: `/w/v1/[domains]` (유저) · `/i/v1/[domain]` (내부) · `/adm/[domain]` (어드민)
+6. API Path: `/w/v1/[domain]` (유저) · `/i/v1/[domain]` (내부) · `/adm/v1/[domain]` (어드민) · `/s/v1/[domain]` (셀러)
 7. Result Code: `[S/E][Domain][HTTP][Seq2]` 형식 (예: `SLB20001`, `ESL40001`)
+
+---
+
+## Git 규칙
+
+- **커밋은 사용자가 명시적으로 요청할 때만** 생성한다.
+- **푸쉬(push)는 사용자가 명시적으로 요청할 때만** 실행한다. 커밋 후 자동으로 푸쉬하지 않는다.
 
 ---
 
