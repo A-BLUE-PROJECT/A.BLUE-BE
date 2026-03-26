@@ -15,7 +15,7 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 public class GlobalExceptionHandler {
 
     /**
-     * 비즈?�스 ?�외 처리
+     * 비즈니스 예외 처리
      * */
     @ExceptionHandler(BusinessException.class)
     public ResponseEntity<ErrorResponse> handleBusinessException(BusinessException e) {
@@ -25,7 +25,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * Request DTO Valid 검�??�류 처리
+     * Request DTO Valid 검증 오류 처리
      * */
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<ErrorResponse> handleValidationException(MethodArgumentNotValidException e) {
@@ -39,7 +39,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * PathVariable / RequestParam Validated 검�??�패 처리
+     * PathVariable / RequestParam Validated 검증 실패 처리
      * */
     @ExceptionHandler(ConstraintViolationException.class)
     public ResponseEntity<ErrorResponse> handleConstraintViolation(ConstraintViolationException e) {
@@ -53,7 +53,7 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * JSON ?�싱 ?�류 처리
+     * JSON 파싱 오류 처리
      * */
     @ExceptionHandler(HttpMessageNotReadableException.class)
     public ResponseEntity<ErrorResponse> handleJsonParseError(HttpMessageNotReadableException e) {
@@ -63,18 +63,18 @@ public class GlobalExceptionHandler {
     }
 
     /**
-     * ?�수 ?�청 ?�라미터 ?�락 처리
+     * 필수 요청 파라미터 누락 처리
      * */
     @ExceptionHandler(MissingServletRequestParameterException.class)
     public ResponseEntity<ErrorResponse> handleMissingParameter(MissingServletRequestParameterException e) {
-        String error = e.getParameterName() + " ?�라미터가 ?�요?�니??";
+        String error = e.getParameterName() + " 파라미터가 필요합니다.";
         log.info("Missing Parameter : {}", error);
 
         return buildErrorResponse(GlobalErrorCode.MISSING_PARAMETER, List.of(error));
     }
 
     /**
-     * ?�상�?못한 ?�버 ?�류 처리
+     * 예상치 못한 서버 오류 처리
      * */
     @ExceptionHandler(Exception.class)
     public ResponseEntity<ErrorResponse> handleUnexpectedException(Exception e) {
