@@ -1,14 +1,14 @@
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: dekk-postgres
+    container_name: allblue-postgres
     restart: always
     ports:
       - "65432:5432"
     environment:
-      POSTGRES_USER: dekk_user
-      POSTGRES_PASSWORD: dekk_password
-      POSTGRES_DB: dekk
+      POSTGRES_USER: allblue_user
+      POSTGRES_PASSWORD: allblue_password
+      POSTGRES_DB: allblue
     volumes:
       - postgres_data:/var/lib/postgresql/data
     networks:
@@ -16,7 +16,7 @@ services:
 
   redis:
     image: redis:7-alpine
-    container_name: dekk-redis
+    container_name: allblue-redis
     restart: always
     ports:
       - "6379:6379"
@@ -25,7 +25,7 @@ services:
 
   n8n:
     image: n8nio/n8n:latest
-    container_name: dekk-n8n
+    container_name: allblue-n8n
     restart: always
     ports:
       - "5678:5678"
@@ -39,7 +39,7 @@ services:
 
   prometheus:
     image: prom/prometheus:v2.53.0
-    container_name: dekk-prometheus
+    container_name: allblue-prometheus
     command:
       - --config.file=/etc/prometheus/prometheus.yml
       - --web.enable-lifecycle
@@ -54,7 +54,7 @@ services:
 
   loki:
     image: grafana/loki:3.1.0
-    container_name: dekk-loki
+    container_name: allblue-loki
     command: -config.file=/etc/loki/local-config.yaml
     ports:
       - "3100:3100"

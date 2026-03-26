@@ -4,6 +4,12 @@ spring:
   profiles:
     active: dev
 
+  datasource:
+    url: jdbc:postgresql://localhost:5432/allblue
+    username: postgres # 또는 설정하신 사용자명
+    password: allblue_password # 설치할 때 넣으신 비번
+    driver-class-name: org.postgresql.Driver
+
   jpa:
     hibernate:
       ddl-auto: create

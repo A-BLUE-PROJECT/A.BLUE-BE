@@ -1,4 +1,4 @@
-name: DEKK Project CI
+name: ALLBLUE Project CI
 
 on:
   push:

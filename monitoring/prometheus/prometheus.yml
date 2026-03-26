@@ -12,7 +12,7 @@ scrape_configs:
     static_configs:
       - targets: ['host.docker.internal:8081']
         labels:
-          application: 'dekk-was-server'
+          application: 'allblue-was-server'
           environment: 'dev'
 
   - job_name: 'prometheus'
