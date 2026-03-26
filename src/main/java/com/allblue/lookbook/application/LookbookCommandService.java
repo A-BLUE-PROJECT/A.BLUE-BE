@@ -3,7 +3,6 @@ package com.allblue.lookbook.application;
 import com.allblue.admin.domain.model.ImageInspection;
 import com.allblue.admin.domain.repository.ImageInspectionRepository;
 import com.allblue.lookbook.application.dto.command.LookbookCompleteCommand;
-import com.allblue.lookbook.application.dto.command.LookbookCreateCommand;
 import com.allblue.lookbook.application.dto.command.LookbookGenerateCommand;
 import com.allblue.lookbook.application.port.out.AiWorkerClient;
 import com.allblue.lookbook.application.port.out.AiWorkerPayload;
@@ -41,32 +40,7 @@ public class LookbookCommandService {
                 command.items());
         Long lookbookId = lookbookRepository.save(lookbook).getId();
 
-        List<Long> productIds = command.items().stream()
-                .map(Lookbook.LookbookItemInfo::productId)
-                .toList();
-        Map<Long, Product> productMap = productRepository.findAllByIds(productIds).stream()
-                .collect(Collectors.toMap(Product::getId, p -> p));
-
-        List<AiWorkerPayload.ProductInfo> productInfos = lookbook.getLookbookItems().stream()
-                .map(item -> new AiWorkerPayload.ProductInfo(
-                        item.getProductId(),
-                        productMap.containsKey(item.getProductId())
-                                ? productMap.get(item.getProductId()).getMappedCategory().name()
-                                : null,
-                        item.getPosition().name(),
-                        productMap.containsKey(item.getProductId())
-                                ? productMap.get(item.getProductId()).getProductImageUrl()
-                                : null))
-                .toList();
-
-        AiWorkerPayload payload = new AiWorkerPayload(
-                lookbookId,
-                command.styleType().name(),
-                command.season().name(),
-                command.targetGender() != null ? command.targetGender().name() : null,
-                command.prompt(),
-                productInfos);
-
+        AiWorkerPayload payload = buildPayload(lookbook, lookbookId, command);
         try {
             aiWorkerClient.requestGeneration(payload);
         } catch (Exception e) {
@@ -76,14 +50,31 @@ public class LookbookCommandService {
         return lookbookId;
     }
 
-    public Long create(LookbookCreateCommand command) {
-        Lookbook lookbook = Lookbook.create(
-                command.styleType(),
-                command.season(),
-                command.targetGender(),
-                command.tags(),
-                command.items());
-        return lookbookRepository.save(lookbook).getId();
+    private AiWorkerPayload buildPayload(Lookbook lookbook, Long lookbookId, LookbookGenerateCommand command) {
+        List<Long> productIds = command.items().stream()
+                .map(Lookbook.LookbookItemInfo::productId)
+                .toList();
+        Map<Long, Product> productMap = productRepository.findAllByIds(productIds).stream()
+                .collect(Collectors.toMap(Product::getId, p -> p));
+
+        List<AiWorkerPayload.ProductInfo> productInfos = lookbook.getLookbookItems().stream()
+                .map(item -> {
+                    Product p = productMap.get(item.getProductId());
+                    return new AiWorkerPayload.ProductInfo(
+                            item.getProductId(),
+                            p != null ? p.getMappedCategory().name() : null,
+                            item.getPosition().name(),
+                            p != null ? p.getProductImageUrl() : null);
+                })
+                .toList();
+
+        return new AiWorkerPayload(
+                lookbookId,
+                command.styleType().name(),
+                command.season().name(),
+                command.targetGender() != null ? command.targetGender().name() : null,
+                command.prompt(),
+                productInfos);
     }
 
     public void complete(LookbookCompleteCommand command) {

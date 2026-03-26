@@ -10,6 +10,7 @@ import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
 
 @Slf4j
 @Component
@@ -22,6 +23,7 @@ public class DataInitializer implements ApplicationRunner {
     private static final String DUMMY_EXTERNAL_ID_PREFIX = "DUMMY_";
 
     @Override
+    @Transactional
     public void run(ApplicationArguments args) {
         if (productRepository.existsByExternalProductId(DUMMY_EXTERNAL_ID_PREFIX + "TOP_001")) {
             log.info("[DataInitializer] 더미 상품 데이터가 이미 존재합니다. 초기화를 건너뜁니다.");
