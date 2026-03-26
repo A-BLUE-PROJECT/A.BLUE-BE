@@ -58,16 +58,16 @@ com.allblue
 
 ```
 docs/
-├── ARCHITECTURE.md        # 시스템 설계 상세
-├── CONVENTIONS.md         # 코딩 컨벤션 상세
-├── full-service-design.md # 서비스 기획 전문
-├── domain-model-changes.md
-├── technical-architecture.md
-├── service-overview.md
-├── roadmap.md
-├── plan/                  # 진행 중인 작업 플랜
-├── draft/                 # 초안
-└── review/                # 리뷰·검증
+├── design/                # 현재 서비스 기획 & 설계
+│   └── SERVICE_DESIGN.md  # 최신 서비스 설계서 (기준 문서)
+├── architecture/          # 기술 아키텍처 & 컨벤션
+│   ├── ARCHITECTURE.md
+│   └── CONVENTIONS.md
+├── frontend/              # 프론트엔드 현황 & 연동 요구사항
+│   ├── FRONTEND_PROGRESS_FOR_BACKEND.md
+│   └── PLAN*.md
+└── archive/               # 완료된 작업 / 구버전 문서 (참고용)
+    └── plan/
 ```
 
-현재 진행 플랜 → `docs/plan/plan.md`
+서비스 설계 기준 문서 → `docs/design/SERVICE_DESIGN.md`
