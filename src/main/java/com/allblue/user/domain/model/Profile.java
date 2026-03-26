@@ -1,6 +1,5 @@
 package com.allblue.user.domain.model;
 
-import com.allblue.user.application.command.UserOnboardingCommand;
 import com.allblue.user.application.command.UserProfileUpdateCommand;
 import com.allblue.user.domain.exception.UserBusinessException;
 import com.allblue.user.domain.exception.UserErrorCode;
@@ -27,7 +26,7 @@ import lombok.NoArgsConstructor;
 @Table(name = "profiles")
 public class Profile {
 
-    private static final Pattern NICKNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9가-??]+$");
+    private static final Pattern NICKNAME_PATTERN = Pattern.compile("^[a-zA-Z0-9가-힣_]+$");
 
     private static final int MIN_NICKNAME_LENGTH = 2;
     private static final int MAX_NICKNAME_LENGTH = 10;
@@ -55,25 +54,6 @@ public class Profile {
 
     @Enumerated(EnumType.STRING)
     private Gender gender;
-
-    private Profile(User user, int height, int weight, String nickname, Gender gender) {
-        validateNickname(nickname);
-        validateHeight(height);
-        validateWeight(weight);
-        this.user = user;
-        this.height = height;
-        this.weight = weight;
-        this.nickname = nickname;
-        this.gender = gender;
-    }
-
-    public static Profile create(User user, UserOnboardingCommand command) {
-        if (command.height() == null || command.weight() == null) {
-            throw new UserBusinessException(UserErrorCode.INVALID_PROFILE_INFO);
-        }
-
-        return new Profile(user, command.height(), command.weight(), command.nickname(), command.gender());
-    }
 
     public void update(UserProfileUpdateCommand command) {
         if (command.nickname() != null && !command.nickname().isBlank()) {

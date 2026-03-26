@@ -1,6 +1,5 @@
 package com.allblue.user.application;
 
-import com.allblue.user.application.command.UserOnboardingCommand;
 import com.allblue.user.application.command.UserProfileUpdateCommand;
 import com.allblue.user.domain.exception.UserBusinessException;
 import com.allblue.user.domain.exception.UserErrorCode;
@@ -18,13 +17,6 @@ public class UserCommandService {
 
     private final UserRepository userRepository;
     private final ProfileRepository profileRepository;
-
-    public void onboardUser(Long userId, UserOnboardingCommand command) {
-        User user = getUser(userId);
-        validateDuplicateNickname(command.nickname());
-        user.completeOnboarding(command);
-        userRepository.save(user);
-    }
 
     public void updateProfileInfo(Long userId, UserProfileUpdateCommand command) {
         User user = getUserWithProfile(userId);

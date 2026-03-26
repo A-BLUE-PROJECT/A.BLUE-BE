@@ -5,7 +5,6 @@ import com.allblue.auth.domain.repository.RefreshTokenRepository;
 import com.allblue.auth.jwt.JwtTokenProvider;
 import com.allblue.auth.presentation.util.CookieUtil;
 import com.allblue.security.oauth2.CustomUserDetails;
-import com.allblue.user.domain.model.enums.UserStatus;
 import jakarta.servlet.ServletException;
 import jakarta.servlet.http.HttpServletRequest;
 import jakarta.servlet.http.HttpServletResponse;
@@ -25,7 +24,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
     private final CookieUtil cookieUtil;
 
     private final String defaultRedirectUri;
-    private final String joinPageUri;
 
     private final int accessTokenMaxAge;
     private final int refreshTokenMaxAge;
@@ -35,7 +33,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
             RefreshTokenRepository refreshTokenRepository,
             CookieUtil cookieUtil,
             @Value("${app.oauth2.redirect-uri}") String defaultRedirectUri,
-            @Value("${app.oauth2.join-page}") String joinPageUri,
             @Value("${jwt.access-token-validity-in-seconds}") int accessTokenMaxAge,
             @Value("${jwt.refresh-token-validity-in-seconds}") int refreshTokenMaxAge) {
 
@@ -43,7 +40,6 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         this.refreshTokenRepository = refreshTokenRepository;
         this.cookieUtil = cookieUtil;
         this.defaultRedirectUri = defaultRedirectUri;
-        this.joinPageUri = joinPageUri;
         this.accessTokenMaxAge = accessTokenMaxAge;
         this.refreshTokenMaxAge = refreshTokenMaxAge;
     }
@@ -62,12 +58,7 @@ public class OAuth2SuccessHandler extends SimpleUrlAuthenticationSuccessHandler 
         String targetUrl = defaultRedirectUri;
 
         if (authentication.getPrincipal() instanceof CustomUserDetails userDetails) {
-
             refreshTokenRepository.save(RefreshToken.create(userDetails.getId(), refreshToken));
-
-            if (userDetails.getStatus() == UserStatus.PENDING) {
-                targetUrl = joinPageUri;
-            }
         }
 
         getRedirectStrategy().sendRedirect(request, response, targetUrl);

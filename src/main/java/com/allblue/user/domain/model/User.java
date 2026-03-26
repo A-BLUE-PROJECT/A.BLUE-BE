@@ -2,10 +2,7 @@ package com.allblue.user.domain.model;
 
 import com.allblue.common.entity.BaseTimeEntity;
 import com.allblue.user.application.command.UserCreateCommand;
-import com.allblue.user.application.command.UserOnboardingCommand;
 import com.allblue.user.application.command.UserProfileUpdateCommand;
-import com.allblue.user.domain.exception.UserBusinessException;
-import com.allblue.user.domain.exception.UserErrorCode;
 import com.allblue.user.domain.model.enums.Provider;
 import com.allblue.user.domain.model.enums.Role;
 import com.allblue.user.domain.model.enums.UserStatus;
@@ -59,15 +56,9 @@ public class User extends BaseTimeEntity {
         user.email = command.email();
         user.provider = command.provider();
         user.providerId = command.providerId();
-        user.status = UserStatus.PENDING;
+        user.status = UserStatus.ACTIVE;
         user.role = Role.MEMBER;
         return user;
-    }
-
-    public void completeOnboarding(UserOnboardingCommand command) {
-        validatePendingStatus();
-        this.status = UserStatus.ACTIVE;
-        this.profile = Profile.create(this, command);
     }
 
     public void updateProfileInfo(UserProfileUpdateCommand command) {
@@ -79,11 +70,5 @@ public class User extends BaseTimeEntity {
     public void deleteUser() {
         this.status = UserStatus.DELETED;
         this.markAsDeleted();
-    }
-
-    private void validatePendingStatus() {
-        if (this.status != UserStatus.PENDING) {
-            throw new UserBusinessException(UserErrorCode.ALREADY_ONBOARDED);
-        }
     }
 }
