@@ -52,9 +52,7 @@ public class SecurityConfig {
                                 "/actuator/**",
                                 "/i/v1/crawl/**",
                                 "/i/v1/inspections/**",
-                                "/w/v1/cards",
-                                "/w/v1/auth/refresh",
-                                "/w/v1/decks/shared/*/cards")
+                                "/w/v1/auth/refresh")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
