@@ -27,7 +27,7 @@ public class LookbookController implements LookbookApi {
     public ResponseEntity<ApiResponse<List<LookbookResponse>>> findAll(
             @RequestParam(required = false) Long cursor,
             @RequestParam(defaultValue = "20") int size) {
-        LookbookSearchQuery query = new LookbookSearchQuery(null, null, null, cursor, size);
+        LookbookSearchQuery query = new LookbookSearchQuery(cursor, size);
         List<LookbookResponse> response = lookbookQueryService.findAll(query).stream()
                 .map(LookbookResponse::from)
                 .toList();

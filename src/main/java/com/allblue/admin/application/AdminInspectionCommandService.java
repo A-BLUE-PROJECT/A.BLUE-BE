@@ -14,25 +14,23 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
+@Transactional
 @RequiredArgsConstructor
 public class AdminInspectionCommandService {
 
     private final ImageInspectionRepository imageInspectionRepository;
     private final LookbookRepository lookbookRepository;
 
-    @Transactional
     public void processInspectionCallback(InspectionCallbackCommand command) {
         ImageInspection inspection = imageInspectionRepository.getByLookbookImageId(command.lookbookImageId());
         inspection.updateAiResult(command.status(), command.aiComment());
     }
 
-    @Transactional
     public void updateInspectionStatus(InspectionStatusUpdateCommand command) {
         ImageInspection inspection = imageInspectionRepository.getById(command.inspectionId());
         inspection.updateAdminStatus(command.status(), command.adminId());
     }
 
-    @Transactional
     public void approveByLookbookId(Long lookbookId, Long adminId) {
         ImageInspection inspection = imageInspectionRepository.getByLookbookId(lookbookId);
         inspection.updateAdminStatus(InspectionStatus.ADMIN_APPROVED, adminId);
@@ -42,7 +40,6 @@ public class AdminInspectionCommandService {
         lookbook.approve();
     }
 
-    @Transactional
     public void rejectByLookbookId(Long lookbookId, Long adminId) {
         ImageInspection inspection = imageInspectionRepository.getByLookbookId(lookbookId);
         inspection.updateAdminStatus(InspectionStatus.ADMIN_REJECTED, adminId);
