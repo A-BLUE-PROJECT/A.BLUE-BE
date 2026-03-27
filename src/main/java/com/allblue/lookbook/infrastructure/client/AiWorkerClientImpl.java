@@ -1,15 +1,15 @@
 package com.allblue.lookbook.infrastructure.client;
 
-import com.allblue.lookbook.application.port.out.AiWorkerClient;
-import com.allblue.lookbook.application.port.out.AiWorkerPayload;
+import com.allblue.lookbook.application.AiWorkerClient;
+import com.allblue.lookbook.application.dto.AiWorkerPayload;
+import java.net.URI;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.http.MediaType;
+import org.springframework.http.RequestEntity;
 import org.springframework.stereotype.Component;
 import org.springframework.web.client.RestTemplate;
-import org.springframework.http.RequestEntity;
-import java.net.URI;
 
 @Slf4j
 @Component

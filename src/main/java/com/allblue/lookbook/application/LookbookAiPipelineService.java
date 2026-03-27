@@ -1,7 +1,7 @@
 package com.allblue.lookbook.application;
 
-import com.allblue.lookbook.application.port.out.AiWorkerClient;
-import com.allblue.lookbook.application.port.out.AiWorkerPayload;
+import com.allblue.lookbook.application.AiWorkerClient;
+import com.allblue.lookbook.application.dto.AiWorkerPayload;
 import com.allblue.lookbook.domain.exception.LookbookBusinessException;
 import com.allblue.lookbook.domain.exception.LookbookErrorCode;
 import com.allblue.lookbook.domain.model.Lookbook;

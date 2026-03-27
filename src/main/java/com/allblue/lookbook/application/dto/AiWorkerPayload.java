@@ -1,4 +1,4 @@
-package com.allblue.lookbook.application.port.out;
+package com.allblue.lookbook.application.dto;
 
 import java.util.List;
 
@@ -8,13 +8,11 @@ public record AiWorkerPayload(
         String season,
         String targetGender,
         String prompt,
-        List<ProductInfo> products
-) {
+        List<ProductInfo> products) {
+
     public record ProductInfo(
             Long productId,
             String category,
             String position,
-            String imageUrl
-    ) {
-    }
+            String imageUrl) {}
 }
