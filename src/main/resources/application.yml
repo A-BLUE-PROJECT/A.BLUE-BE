@@ -54,6 +54,12 @@ worker:
   n8n:
     webhook-url: ${N8N_WEBHOOK_URL:http://localhost:5678/webhook/outfit-filter}
 
+app:
+  image:
+    base-url: ${IMAGE_BASE_URL:http://localhost:8080/images}
+    product-path: ${IMAGE_PRODUCT_PATH:C:/Users/Windows10/Desktop/A.BLUE/Product Image}
+    model-path: ${IMAGE_MODEL_PATH:C:/Users/Windows10/Desktop/A.BLUE/Model asset}
+
 cafe24:
   client-id: ${CAFE24_CLIENT_ID:your-client-id}
   client-secret: ${CAFE24_CLIENT_SECRET:your-client-secret}

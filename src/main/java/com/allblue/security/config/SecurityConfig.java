@@ -53,7 +53,8 @@ public class SecurityConfig {
                                 "/i/v1/inspections/**",
                                 "/w/v1/auth/refresh",
                                 "/w/v1/lookbooks",
-                                "/w/v1/lookbooks/**")
+                                "/w/v1/lookbooks/**",
+                                "/images/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())
