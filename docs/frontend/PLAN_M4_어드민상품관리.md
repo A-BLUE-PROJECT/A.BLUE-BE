@@ -274,8 +274,8 @@ POST /adm/v1/products/sync
 
 ## 완료 기준 체크리스트
 
-- [ ] `GET /adm/v1/products` — 전체 상품 목록 반환
-- [ ] `GET /adm/v1/products?category=TOP` — TOP 카테고리 필터 정상 동작
-- [ ] `PATCH /adm/v1/products/{id}/hidden` — `hidden: true` → 숨김 처리
-- [ ] 숨김 처리된 상품이 generate 시 productIds에 포함돼도 이미지 합성은 계속 진행 (AI 워커에 imageUrl 전달되므로)
-- [ ] Swagger UI에서 Admin Product API 노출 확인
+- [x] `GET /adm/v1/products` — 전체 상품 목록 반환
+- [x] `GET /adm/v1/products?category=TOP` — TOP 카테고리 필터 정상 동작
+- [x] `PATCH /adm/v1/products/{id}/hidden` — `hidden: true` → 숨김 처리
+- [x] 숨김 처리된 상품이 generate 시 productIds에 포함돼도 이미지 합성은 계속 진행 (AI 워커에 imageUrl 전달되므로)
+- [x] Swagger UI에서 Admin Product API 노출 확인

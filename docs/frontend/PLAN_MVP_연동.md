@@ -12,7 +12,7 @@
 | M1 — 기반 데이터 & 상태 정합성 | ✅ 완료 | 2026-03-27 |
 | M2 — B2C 갤러리 & 룩북 상세 | ✅ 완료 | 2026-03-27 |
 | M3 — AI 룩북 생성 파이프라인 | ✅ 완료 | 2026-03-27 |
-| M4 — 어드민 상품 관리 | ⬜ 대기 | — |
+| M4 — 어드민 상품 관리 | ✅ 완료 | 2026-03-27 |
 
 ---
 
@@ -33,13 +33,18 @@
 | AI 완료 콜백 | `POST /i/v1/lookbooks/{id}/complete` | aiScore 저장 + ImageInspection 자동 생성 |
 | 어드민 룩북 목록 | `GET /adm/v1/lookbooks` | 전체 상태 조회 (PENDING 포함) |
 
-### ❌ 구현 필요
+### ✅ M4 구현 완료
 
-| 프론트 요구사항 | 구현할 엔드포인트 | 우선순위 | 마일스톤 |
-| :--- | :--- | :--- | :--- |
-| 어드민 상품 목록 | `GET /adm/v1/products` | 🟠 High | M4 |
-| 상품 숨김/공개 | `PATCH /adm/v1/products/{id}/hidden` | 🟠 High | M4 |
-| 상품 동기화 트리거 | `POST /adm/v1/products/sync` | 🟡 Phase 3 (카페24 연동 시) | — |
+| 프론트 요구사항 | 백엔드 엔드포인트 | 비고 |
+| :--- | :--- | :--- |
+| 어드민 상품 목록 | `GET /adm/v1/products` | 카테고리 필터(`?category=TOP`) 지원 |
+| 상품 숨김/공개 | `PATCH /adm/v1/products/{id}/hidden` | `hidden` boolean 필드 |
+
+### ❌ Phase 3 (미구현)
+
+| 프론트 요구사항 | 구현할 엔드포인트 | 우선순위 |
+| :--- | :--- | :--- |
+| 상품 동기화 트리거 | `POST /adm/v1/products/sync` | 🟡 카페24 연동 시 |
 
 ---
 
