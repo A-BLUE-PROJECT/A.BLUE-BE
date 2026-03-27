@@ -1,4 +1,4 @@
-package com.allblue.category.application.dto;
+package com.allblue.category.application.dto.result;
 
 import com.allblue.category.domain.model.Category;
 import java.util.List;

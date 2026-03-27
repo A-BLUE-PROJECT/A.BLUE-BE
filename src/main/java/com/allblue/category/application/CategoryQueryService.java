@@ -1,6 +1,6 @@
 package com.allblue.category.application;
 
-import com.allblue.category.application.dto.CategoryListResult;
+import com.allblue.category.application.dto.result.CategoryListResult;
 import com.allblue.category.domain.model.Category;
 import com.allblue.category.domain.repository.CategoryRepository;
 import java.util.List;
