@@ -14,8 +14,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
 
 @Getter
@@ -23,7 +21,6 @@ import org.hibernate.annotations.SQLDelete;
 @Table(name = "lookbook_images")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE lookbook_images SET deleted_at = now() WHERE id = ?")
-@FilterDef(name = "deletedFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
 @Filter(name = "deletedFilter", condition = "deleted_at IS NULL")
 public class LookbookImage extends BaseTimeEntity {
 
