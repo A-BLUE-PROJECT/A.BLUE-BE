@@ -11,6 +11,8 @@ import org.springframework.data.repository.query.Param;
 
 public interface LookbookJpaRepository extends JpaRepository<Lookbook, Long> {
 
+    List<Lookbook> findByStatus(LookbookStatus status);
+
     List<Lookbook> findByStatusAndCreatedAtBefore(LookbookStatus status, LocalDateTime threshold);
 
     @Query("SELECT l FROM Lookbook l WHERE l.status = :status ORDER BY l.id DESC")

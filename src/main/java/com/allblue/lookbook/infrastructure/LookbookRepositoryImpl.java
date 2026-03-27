@@ -32,8 +32,13 @@ public class LookbookRepositoryImpl implements LookbookRepository {
     }
 
     @Override
+    public List<Lookbook> findAllByStatus(LookbookStatus status) {
+        return lookbookJpaRepository.findByStatus(status);
+    }
+
+    @Override
     public List<Lookbook> findApproved(Long cursorId, int size) {
-        PageRequest pageable = PageRequest.of(0, size);
+        PageRequest pageable = PageRequest.of(0, size + 1);
         if (cursorId == null) {
             return lookbookJpaRepository.findByStatusOrderByIdDesc(LookbookStatus.APPROVED, pageable);
         }

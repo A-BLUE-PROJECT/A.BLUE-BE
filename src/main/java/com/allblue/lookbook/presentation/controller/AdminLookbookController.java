@@ -5,6 +5,7 @@ import com.allblue.admin.security.AdminUserDetails;
 import com.allblue.common.response.ApiResponse;
 import com.allblue.lookbook.application.LookbookCommandService;
 import com.allblue.lookbook.application.LookbookQueryService;
+import com.allblue.lookbook.domain.model.enums.LookbookStatus;
 import com.allblue.lookbook.presentation.response.LookbookResponse;
 import com.allblue.lookbook.presentation.response.LookbookResultCode;
 import java.util.List;
@@ -20,6 +21,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 @RestController
@@ -42,8 +44,9 @@ public class AdminLookbookController implements AdminLookbookApi {
 
     @Override
     @GetMapping
-    public ResponseEntity<ApiResponse<List<LookbookResponse>>> findAll() {
-        List<LookbookResponse> response = lookbookQueryService.findAllForAdmin().stream()
+    public ResponseEntity<ApiResponse<List<LookbookResponse>>> findAll(
+            @RequestParam(required = false) LookbookStatus status) {
+        List<LookbookResponse> response = lookbookQueryService.findAllForAdmin(status).stream()
                 .map(LookbookResponse::from)
                 .toList();
         return ResponseEntity

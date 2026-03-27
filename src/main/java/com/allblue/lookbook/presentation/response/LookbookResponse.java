@@ -5,6 +5,7 @@ import com.allblue.lookbook.domain.model.enums.LookbookStatus;
 import com.allblue.lookbook.domain.model.enums.Season;
 import com.allblue.lookbook.domain.model.enums.StyleType;
 import com.allblue.lookbook.domain.model.enums.TargetGender;
+import java.time.LocalDateTime;
 
 public record LookbookResponse(
         Long id,
@@ -14,7 +15,8 @@ public record LookbookResponse(
         String tags,
         LookbookStatus status,
         String imageUrl,
-        Integer aiScore) {
+        Integer aiScore,
+        LocalDateTime createdAt) {
 
     public static LookbookResponse from(LookbookResult result) {
         return new LookbookResponse(
@@ -25,6 +27,7 @@ public record LookbookResponse(
                 result.tags(),
                 result.status(),
                 result.imageUrl(),
-                result.aiScore());
+                result.aiScore(),
+                result.createdAt());
     }
 }

@@ -1,5 +1,6 @@
 package com.allblue.lookbook.application;
 
+import com.allblue.common.response.CursorPage;
 import com.allblue.lookbook.application.dto.query.LookbookSearchQuery;
 import com.allblue.lookbook.application.dto.result.LookbookDetailResult;
 import com.allblue.lookbook.application.dto.result.LookbookResult;
@@ -7,6 +8,7 @@ import com.allblue.lookbook.domain.exception.LookbookBusinessException;
 import com.allblue.lookbook.domain.exception.LookbookErrorCode;
 import com.allblue.lookbook.domain.model.Lookbook;
 import com.allblue.lookbook.domain.model.LookbookItem;
+import com.allblue.lookbook.domain.model.enums.LookbookStatus;
 import com.allblue.lookbook.domain.repository.LookbookRepository;
 import com.allblue.product.domain.model.Product;
 import com.allblue.product.domain.repository.ProductRepository;
@@ -25,13 +27,19 @@ public class LookbookQueryService {
     private final LookbookRepository lookbookRepository;
     private final ProductRepository productRepository;
 
-    public List<LookbookResult> findAll(LookbookSearchQuery query) {
-        return lookbookRepository.findApproved(query.cursorId(), query.size()).stream()
+    public CursorPage<LookbookResult> findAll(LookbookSearchQuery query) {
+        List<LookbookResult> raw = lookbookRepository.findApproved(query.cursorId(), query.size()).stream()
                 .map(LookbookResult::from)
                 .toList();
+        return CursorPage.of(raw, query.size());
     }
 
-    public List<LookbookResult> findAllForAdmin() {
+    public List<LookbookResult> findAllForAdmin(LookbookStatus status) {
+        if (status != null) {
+            return lookbookRepository.findAllByStatus(status).stream()
+                    .map(LookbookResult::from)
+                    .toList();
+        }
         return lookbookRepository.findAll().stream()
                 .map(LookbookResult::from)
                 .toList();
