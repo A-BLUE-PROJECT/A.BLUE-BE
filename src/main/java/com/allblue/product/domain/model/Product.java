@@ -67,6 +67,9 @@ public class Product extends BaseTimeEntity {
     @Column(name = "stock_status", nullable = false)
     private StockStatus stockStatus;
 
+    @Column(name = "hidden", nullable = false)
+    private boolean hidden = false;
+
     private Product(
             Long sellerId,
             String externalProductId,
@@ -120,5 +123,13 @@ public class Product extends BaseTimeEntity {
 
     public void updateStockStatus(StockStatus stockStatus) {
         this.stockStatus = stockStatus;
+    }
+
+    public void hide() {
+        this.hidden = true;
+    }
+
+    public void reveal() {
+        this.hidden = false;
     }
 }
