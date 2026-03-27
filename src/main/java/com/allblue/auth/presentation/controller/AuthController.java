@@ -1,7 +1,7 @@
 package com.allblue.auth.presentation.controller;
 
 import com.allblue.auth.application.AuthCommandService;
-import com.allblue.auth.application.command.TokenRefreshCommand;
+import com.allblue.auth.application.dto.command.TokenRefreshCommand;
 import com.allblue.auth.application.dto.result.TokenRefreshResult;
 import com.allblue.auth.presentation.response.AuthResultCode;
 import com.allblue.auth.presentation.util.CookieUtil;

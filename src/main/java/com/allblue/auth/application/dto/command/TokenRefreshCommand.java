@@ -1,4 +1,4 @@
-package com.allblue.auth.application.command;
+package com.allblue.auth.application.dto.command;
 
 import com.allblue.auth.domain.exception.AuthBusinessException;
 import com.allblue.auth.domain.exception.AuthErrorCode;

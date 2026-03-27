@@ -1,8 +1,8 @@
 package com.allblue.user.domain.model;
 
 import com.allblue.common.entity.BaseTimeEntity;
-import com.allblue.user.application.command.UserCreateCommand;
-import com.allblue.user.application.command.UserProfileUpdateCommand;
+import com.allblue.user.application.dto.command.UserCreateCommand;
+import com.allblue.user.application.dto.command.UserProfileUpdateCommand;
 import com.allblue.user.domain.model.enums.Provider;
 import com.allblue.user.domain.model.enums.Role;
 import com.allblue.user.domain.model.enums.UserStatus;

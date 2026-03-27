@@ -1,7 +1,7 @@
 package com.allblue.category.application;
 
-import com.allblue.category.application.command.CreateCategoryCommand;
-import com.allblue.category.application.command.UpdateCategoryNameCommand;
+import com.allblue.category.application.dto.command.CreateCategoryCommand;
+import com.allblue.category.application.dto.command.UpdateCategoryNameCommand;
 import com.allblue.category.domain.exception.CategoryBusinessException;
 import com.allblue.category.domain.exception.CategoryErrorCode;
 import com.allblue.category.domain.model.Category;

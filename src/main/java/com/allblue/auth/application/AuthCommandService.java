@@ -1,6 +1,6 @@
 package com.allblue.auth.application;
 
-import com.allblue.auth.application.command.TokenRefreshCommand;
+import com.allblue.auth.application.dto.command.TokenRefreshCommand;
 import com.allblue.auth.application.dto.result.TokenRefreshResult;
 import com.allblue.auth.domain.exception.AuthBusinessException;
 import com.allblue.auth.domain.exception.AuthErrorCode;

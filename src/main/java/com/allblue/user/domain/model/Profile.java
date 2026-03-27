@@ -1,6 +1,6 @@
 package com.allblue.user.domain.model;
 
-import com.allblue.user.application.command.UserProfileUpdateCommand;
+import com.allblue.user.application.dto.command.UserProfileUpdateCommand;
 import com.allblue.user.domain.exception.UserBusinessException;
 import com.allblue.user.domain.exception.UserErrorCode;
 import com.allblue.user.domain.model.enums.Gender;

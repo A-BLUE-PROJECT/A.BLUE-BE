@@ -1,4 +1,4 @@
-package com.allblue.user.application.command;
+package com.allblue.user.application.dto.command;
 
 import com.allblue.user.domain.model.enums.Gender;
 

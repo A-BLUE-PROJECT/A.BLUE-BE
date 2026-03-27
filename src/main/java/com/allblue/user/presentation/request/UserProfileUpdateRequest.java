@@ -1,6 +1,6 @@
 package com.allblue.user.presentation.request;
 
-import com.allblue.user.application.command.UserProfileUpdateCommand;
+import com.allblue.user.application.dto.command.UserProfileUpdateCommand;
 import com.allblue.user.domain.model.enums.Gender;
 import jakarta.validation.constraints.Max;
 import jakarta.validation.constraints.Min;
