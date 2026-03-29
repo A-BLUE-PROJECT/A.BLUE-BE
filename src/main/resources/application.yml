@@ -3,12 +3,22 @@ spring:
     name: allblue-was-server
   profiles:
     active: dev
+  docker:
+    compose:
+      enabled: false
 
   datasource:
-    url: jdbc:postgresql://localhost:5432/allblue
-    username: postgres # 또는 설정하신 사용자명
-    password: allblue_password # 설치할 때 넣으신 비번
+    url: jdbc:postgresql://${DB_HOST:localhost}:${DB_PORT:5432}/${DB_NAME:allblue}
+    username: ${DB_USERNAME:postgres}
+    password: ${DB_PASSWORD:allblue_password}
     driver-class-name: org.postgresql.Driver
+
+  data:
+    redis:
+      host: ${REDIS_HOST:localhost}
+      port: ${REDIS_PORT:6379}
+      ssl:
+        enabled: false
 
   jpa:
     hibernate:
@@ -16,6 +26,34 @@ spring:
     properties:
       hibernate:
         default_batch_fetch_size: 30
+
+  security:
+    oauth2:
+      client:
+        registration:
+          google:
+            client-id: ${GOOGLE_CLIENT_ID:dummy-google-id}
+            client-secret: ${GOOGLE_CLIENT_SECRET:dummy-google-secret}
+            scope:
+              - email
+              - profile
+            redirect-uri: "{baseUrl}/login/oauth2/code/{registrationId}"
+          kakao:
+            client-id: ${KAKAO_CLIENT_ID:dummy-kakao-id}
+            client-secret: ${KAKAO_CLIENT_SECRET:dummy-kakao-secret}
+            client-authentication-method: client_secret_post
+            authorization-grant-type: authorization_code
+            redirect-uri: "{baseUrl}/login/oauth2/code/kakao"
+            client-name: Kakao
+            scope:
+              - profile_nickname
+              - account_email
+        provider:
+          kakao:
+            authorization-uri: https://kauth.kakao.com/oauth/authorize
+            token-uri: https://kauth.kakao.com/oauth/token
+            user-info-uri: https://kapi.kakao.com/v2/user/me
+            user-name-attribute: id
 
 server:
   port: 8080
@@ -27,9 +65,24 @@ springdoc:
     path: /v3/api-docs
 
 jwt:
+  secret: ${JWT_SECRET_KEY:dGhpcy1pcy1hLWR1bW15LXNlY3JldC1rZXktZm9yLXRlc3RpbmctcHVycG9zZXMtb25seS0xMjM=}
   access-token-validity-in-seconds: 3600
   refresh-token-validity-in-seconds: 1209600
   admin-access-token-validity-in-seconds: 3600
+
+app:
+  oauth2:
+    redirect-uri: ${OAUTH2_REDIRECT_URI:http://localhost:3000/oauth2/redirect}
+    login-page: ${LOGIN_PAGE_URI:http://localhost:3000/login}
+  cors:
+    allowed-origins: ${ALLOWED_ORIGINS:http://localhost:3000}
+  cookie:
+    domain: ${COOKIE_DOMAIN:localhost}
+    secure: ${COOKIE_SECURE:false}
+  image:
+    base-url: ${IMAGE_BASE_URL:http://localhost:8080/images}
+    product-path: ${IMAGE_PRODUCT_PATH:C:/Users/Windows10/Desktop/A.BLUE/Product Image}
+    model-path: ${IMAGE_MODEL_PATH:C:/Users/Windows10/Desktop/A.BLUE/Model asset}
 
 management:
   endpoints:
@@ -53,12 +106,6 @@ management:
 worker:
   n8n:
     webhook-url: ${N8N_WEBHOOK_URL:http://localhost:5678/webhook/outfit-filter}
-
-app:
-  image:
-    base-url: ${IMAGE_BASE_URL:http://localhost:8080/images}
-    product-path: ${IMAGE_PRODUCT_PATH:C:/Users/Windows10/Desktop/A.BLUE/Product Image}
-    model-path: ${IMAGE_MODEL_PATH:C:/Users/Windows10/Desktop/A.BLUE/Model asset}
 
 cafe24:
   client-id: ${CAFE24_CLIENT_ID:your-client-id}
