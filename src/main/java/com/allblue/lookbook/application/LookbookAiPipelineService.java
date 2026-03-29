@@ -15,6 +15,7 @@ import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,6 +23,9 @@ import org.springframework.transaction.annotation.Transactional;
 @Service
 @RequiredArgsConstructor
 public class LookbookAiPipelineService {
+
+    private static final int PENDING_THRESHOLD_MINUTES = 10;
+    private static final int MAX_RETRY_COUNT = 3;
 
     private final LookbookRepository lookbookRepository;
     private final ProductRepository productRepository;
@@ -71,16 +75,24 @@ public class LookbookAiPipelineService {
     }
 
     /**
-     * PENDING 상태로 오래 머물러 있는 룩북 재시도 (스케줄러에서 호출)
+     * PENDING 상태로 10분 이상 머물러 있는 룩북 재시도 (최대 3회, 초과 시 FAILED 처리)
      */
-    @Transactional(readOnly = true)
-    public void retryPendingLookbooks(int minutesThreshold) {
-        LocalDateTime thresholdTime = LocalDateTime.now().minusMinutes(minutesThreshold);
-        List<Lookbook> pendingLookbooks = lookbookRepository.findByStatusAndCreatedAtBefore(LookbookStatus.PENDING, thresholdTime);
+    @Scheduled(fixedDelay = 600_000)
+    @Transactional
+    public void retryPendingLookbooks() {
+        LocalDateTime threshold = LocalDateTime.now().minusMinutes(PENDING_THRESHOLD_MINUTES);
+        List<Lookbook> pendingLookbooks = lookbookRepository.findByStatusAndCreatedAtBefore(LookbookStatus.PENDING, threshold);
 
-        log.info("Found {} pending lookbooks older than {} minutes. Retrying...", pendingLookbooks.size(), minutesThreshold);
+        log.info("Found {} pending lookbooks older than {} minutes. Retrying...", pendingLookbooks.size(), PENDING_THRESHOLD_MINUTES);
 
         for (Lookbook lookbook : pendingLookbooks) {
+            boolean canRetry = lookbook.incrementRetryOrFail();
+            if (!canRetry) {
+                log.warn("Lookbook {} exceeded max retry count ({}). Marked as FAILED.", lookbook.getId(), MAX_RETRY_COUNT);
+                lookbookRepository.save(lookbook);
+                continue;
+            }
+            lookbookRepository.save(lookbook);
             try {
                 triggerGeneration(lookbook.getId());
             } catch (Exception e) {

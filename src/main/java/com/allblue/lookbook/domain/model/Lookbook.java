@@ -61,6 +61,9 @@ public class Lookbook extends BaseTimeEntity {
     @Column(name = "ai_score")
     private Integer aiScore;
 
+    @Column(name = "retry_count", nullable = false)
+    private int retryCount = 0;
+
     @OneToOne(mappedBy = "lookbook", cascade = CascadeType.ALL, orphanRemoval = true)
     private LookbookImage lookbookImage;
 
@@ -112,6 +115,15 @@ public class Lookbook extends BaseTimeEntity {
             throw new LookbookBusinessException(LookbookErrorCode.LOOKBOOK_STATUS_NOT_COMPLETED);
         }
         this.status = LookbookStatus.REJECTED;
+    }
+
+    public boolean incrementRetryOrFail() {
+        this.retryCount++;
+        if (this.retryCount >= 3) {
+            this.status = LookbookStatus.FAILED;
+            return false;
+        }
+        return true;
     }
 
     private void validateStatusIsPending() {
