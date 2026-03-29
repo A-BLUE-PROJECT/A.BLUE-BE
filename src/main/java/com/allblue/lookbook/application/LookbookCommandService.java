@@ -37,6 +37,7 @@ public class LookbookCommandService {
                 command.season(),
                 command.targetGender(),
                 command.tags(),
+                command.modelImageUrl(),
                 command.items());
         Long lookbookId = lookbookRepository.save(lookbook).getId();
 
@@ -74,6 +75,7 @@ public class LookbookCommandService {
                 command.season().name(),
                 command.targetGender() != null ? command.targetGender().name() : null,
                 command.prompt(),
+                command.modelImageUrl(),
                 productInfos);
     }
 

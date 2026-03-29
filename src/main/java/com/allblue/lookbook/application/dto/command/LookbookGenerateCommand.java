@@ -11,5 +11,6 @@ public record LookbookGenerateCommand(
         Season season,
         TargetGender targetGender,
         String tags,
+        String modelImageUrl,
         List<LookbookItemInfo> items,
         String prompt) {}

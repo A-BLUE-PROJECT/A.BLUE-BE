@@ -16,6 +16,7 @@ public record LookbookGenerateRequest(
         @NotNull Season season,
         TargetGender targetGender,
         String tags,
+        String modelImageUrl,
         @NotEmpty @Valid List<LookbookItemRequest> items,
         String prompt) {
 
@@ -27,6 +28,6 @@ public record LookbookGenerateRequest(
         List<LookbookItemInfo> itemInfos = items.stream()
                 .map(i -> new LookbookItemInfo(i.productId(), i.position()))
                 .toList();
-        return new LookbookGenerateCommand(styleType, season, targetGender, tags, itemInfos, prompt);
+        return new LookbookGenerateCommand(styleType, season, targetGender, tags, modelImageUrl, itemInfos, prompt);
     }
 }

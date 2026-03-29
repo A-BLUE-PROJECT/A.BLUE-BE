@@ -68,6 +68,7 @@ public class LookbookAiPipelineService {
                 lookbook.getSeason().name(),
                 lookbook.getTargetGender() != null ? lookbook.getTargetGender().name() : null,
                 null,
+                lookbook.getModelImageUrl(),
                 productInfos);
 
         log.info("Triggering AI generation for Lookbook {}", lookbookId);

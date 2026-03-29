@@ -8,6 +8,7 @@ public record AiWorkerPayload(
         String season,
         String targetGender,
         String prompt,
+        String modelImageUrl,
         List<ProductInfo> products) {
 
     public record ProductInfo(

@@ -61,6 +61,9 @@ public class Lookbook extends BaseTimeEntity {
     @Column(name = "ai_score")
     private Integer aiScore;
 
+    @Column(name = "model_image_url")
+    private String modelImageUrl;
+
     @Column(name = "retry_count", nullable = false)
     private int retryCount = 0;
 
@@ -70,11 +73,12 @@ public class Lookbook extends BaseTimeEntity {
     @OneToMany(mappedBy = "lookbook", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LookbookItem> lookbookItems = new ArrayList<>();
 
-    private Lookbook(StyleType styleType, Season season, TargetGender targetGender, String tags) {
+    private Lookbook(StyleType styleType, Season season, TargetGender targetGender, String tags, String modelImageUrl) {
         this.styleType = styleType;
         this.season = season;
         this.targetGender = targetGender;
         this.tags = tags;
+        this.modelImageUrl = modelImageUrl;
         this.status = LookbookStatus.PENDING;
     }
 
@@ -83,8 +87,9 @@ public class Lookbook extends BaseTimeEntity {
             Season season,
             TargetGender targetGender,
             String tags,
+            String modelImageUrl,
             List<LookbookItemInfo> items) {
-        Lookbook lookbook = new Lookbook(styleType, season, targetGender, tags);
+        Lookbook lookbook = new Lookbook(styleType, season, targetGender, tags, modelImageUrl);
         items.stream()
                 .map(item -> LookbookItem.create(lookbook, item.productId(), item.position()))
                 .forEach(lookbook.lookbookItems::add);

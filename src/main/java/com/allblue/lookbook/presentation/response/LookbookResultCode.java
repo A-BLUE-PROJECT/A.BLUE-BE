@@ -7,6 +7,7 @@ import org.springframework.http.HttpStatus;
 @RequiredArgsConstructor
 public enum LookbookResultCode implements ResultCode {
     LOOKBOOK_GENERATE_ACCEPTED("SLB20201", "룩북 생성 요청이 접수되었습니다.", HttpStatus.ACCEPTED),
+    MODEL_LIST_OK("SLB20008", "모델 이미지 목록 조회가 완료되었습니다.", HttpStatus.OK),
     LOOKBOOK_LIST_OK("SLB20001", "룩북 목록 조회가 완료되었습니다.", HttpStatus.OK),
     LOOKBOOK_DETAIL_OK("SLB20002", "룩북 상세 조회가 완료되었습니다.", HttpStatus.OK),
     LOOKBOOK_COMPLETED("SLB20003", "룩북 생성이 완료되었습니다.", HttpStatus.OK),
