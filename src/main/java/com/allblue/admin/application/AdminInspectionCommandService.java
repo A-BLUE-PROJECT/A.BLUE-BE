@@ -10,6 +10,7 @@ import com.allblue.lookbook.domain.exception.LookbookErrorCode;
 import com.allblue.lookbook.domain.model.Lookbook;
 import com.allblue.lookbook.domain.repository.LookbookRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.CacheEvict;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -31,6 +32,7 @@ public class AdminInspectionCommandService {
         inspection.updateAdminStatus(command.status(), command.adminId());
     }
 
+    @CacheEvict(value = "lookbooks", allEntries = true)
     public void approveByLookbookId(Long lookbookId, Long adminId) {
         ImageInspection inspection = imageInspectionRepository.getByLookbookId(lookbookId);
         inspection.updateAdminStatus(InspectionStatus.ADMIN_APPROVED, adminId);
@@ -40,6 +42,7 @@ public class AdminInspectionCommandService {
         lookbook.approve();
     }
 
+    @CacheEvict(value = "lookbooks", allEntries = true)
     public void rejectByLookbookId(Long lookbookId, Long adminId) {
         ImageInspection inspection = imageInspectionRepository.getByLookbookId(lookbookId);
         inspection.updateAdminStatus(InspectionStatus.ADMIN_REJECTED, adminId);

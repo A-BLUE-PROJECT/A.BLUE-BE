@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -27,6 +28,7 @@ public class LookbookQueryService {
     private final LookbookRepository lookbookRepository;
     private final ProductRepository productRepository;
 
+    @Cacheable(value = "lookbooks", key = "#query.cursorId() + '_' + #query.size()")
     public CursorPage<LookbookResult> findAll(LookbookSearchQuery query) {
         List<LookbookResult> raw = lookbookRepository.findApproved(query.cursorId(), query.size()).stream()
                 .map(LookbookResult::from)
