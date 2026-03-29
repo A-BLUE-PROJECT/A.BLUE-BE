@@ -2,11 +2,9 @@ package com.allblue.user.domain.model;
 
 import com.allblue.common.entity.BaseTimeEntity;
 import com.allblue.user.application.dto.command.UserCreateCommand;
-import com.allblue.user.application.dto.command.UserProfileUpdateCommand;
 import com.allblue.user.domain.model.enums.Provider;
 import com.allblue.user.domain.model.enums.Role;
 import com.allblue.user.domain.model.enums.UserStatus;
-import jakarta.persistence.CascadeType;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.EnumType;
@@ -14,7 +12,6 @@ import jakarta.persistence.Enumerated;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-import jakarta.persistence.OneToOne;
 import jakarta.persistence.Table;
 import lombok.AccessLevel;
 import lombok.Getter;
@@ -48,9 +45,6 @@ public class User extends BaseTimeEntity {
     @Column(nullable = false)
     private UserStatus status;
 
-    @OneToOne(mappedBy = "user", cascade = CascadeType.ALL, orphanRemoval = true)
-    private Profile profile;
-
     public static User create(UserCreateCommand command) {
         User user = new User();
         user.email = command.email();
@@ -59,12 +53,6 @@ public class User extends BaseTimeEntity {
         user.status = UserStatus.ACTIVE;
         user.role = Role.MEMBER;
         return user;
-    }
-
-    public void updateProfileInfo(UserProfileUpdateCommand command) {
-        if (this.profile != null) {
-            this.profile.update(command);
-        }
     }
 
     public void deleteUser() {
