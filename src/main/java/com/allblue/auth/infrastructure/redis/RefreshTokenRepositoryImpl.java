@@ -28,7 +28,7 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
             redisTemplate.opsForValue().set(key, refreshToken.getToken(), refreshTokenTtlSeconds, TimeUnit.SECONDS);
         } catch (Exception e) {
             log.error(
-                    "[Redis Fail-Safe] Refresh Token ????ㅽ?- UserId: {}, Reason: {}",
+                    "[Redis Fail-Safe] Refresh Token 저장 실패 - UserId: {}, Reason: {}",
                     refreshToken.getUserId(),
                     e.getMessage());
         }
@@ -44,7 +44,7 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
             }
             return Optional.of(RefreshToken.create(userId, token));
         } catch (Exception e) {
-            log.error("[Redis Fail-Safe] Refresh Token 議고 ?ㅽ?- UserId: {}, Reason: {}", userId, e.getMessage());
+            log.error("[Redis Fail-Safe] Refresh Token 조회 실패 - UserId: {}, Reason: {}", userId, e.getMessage());
             return Optional.empty();
         }
     }
@@ -55,7 +55,7 @@ public class RefreshTokenRepositoryImpl implements RefreshTokenRepository {
         try {
             redisTemplate.delete(key);
         } catch (Exception e) {
-            log.error("[Redis Fail-Safe] Refresh Token ?? ?ㅽ?- UserId: {}, Reason: {}", userId, e.getMessage());
+            log.error("[Redis Fail-Safe] Refresh Token 삭제 실패 - UserId: {}, Reason: {}", userId, e.getMessage());
         }
     }
 }

@@ -6,11 +6,11 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 public enum CategoryResultCode implements ResultCode {
-    CATEGORY_TREE_FETCHED(HttpStatus.OK, "SCT20001", "移댄怨由??몃━ 議고???깃났?????"),
-    CATEGORY_NAME_UPDATED(HttpStatus.OK, "SCT20002", "移댄怨由щ??????깃났?????"),
-    CATEGORY_DELETED(HttpStatus.OK, "SCT20003", "移댄怨由??????깃났?????"),
+    CATEGORY_TREE_FETCHED(HttpStatus.OK, "SCT20001", "카테고리 트리 조회가 완료되었습니다."),
+    CATEGORY_NAME_UPDATED(HttpStatus.OK, "SCT20002", "카테고리명 수정이 완료되었습니다."),
+    CATEGORY_DELETED(HttpStatus.OK, "SCT20003", "카테고리 삭제가 완료되었습니다."),
 
-    CATEGORY_CREATED(HttpStatus.CREATED, "SCT20101", "移댄怨由??????깃났?????");
+    CATEGORY_CREATED(HttpStatus.CREATED, "SCT20101", "카테고리 생성이 완료되었습니다.");
 
     private final HttpStatus status;
     private final String code;

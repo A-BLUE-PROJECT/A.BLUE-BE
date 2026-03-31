@@ -9,10 +9,10 @@ import io.swagger.v3.oas.annotations.tags.Tag;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 
-@Tag(name = "?ъ???蹂?議고 API", description = "?ъ???蹂?議고 API")
+@Tag(name = "사용자 정보 조회 API", description = "사용자 정보 조회 API")
 public interface UserQueryApi {
 
-    @Operation(summary = "???蹂?議고", description = "???濡洹?몃 ?ъ?? ????濡???蹂대?議고?⑸??")
+    @Operation(summary = "내 정보 조회", description = "로그인한 사용자의 개인정보를 조회합니다")
     ResponseEntity<ApiResponse<UserInfoResponse>> getMyInfo(
             @Parameter(hidden = true) @AuthenticationPrincipal CustomUserDetails userDetails);
 }

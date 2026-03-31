@@ -41,25 +41,25 @@ public class DistributedLockAop {
                     rLock.tryLock(distributedLock.waitTime(), distributedLock.leaseTime(), distributedLock.timeUnit());
 
             if (!available) {
-                log.warn("Redisson Lock ?? ?ㅽ?[{}]", key);
+                log.warn("Redisson Lock 획득 실패 [{}]", key);
                 throw new BusinessException(GlobalErrorCode.LOCK_ACQUISITION_FAILED);
             }
 
-            log.debug("Redisson Lock ?? [{}]", key);
+            log.debug("Redisson Lock 획득 [{}]", key);
             return aopForTransaction.proceed(joinPoint);
 
         } catch (InterruptedException e) {
-            log.error("Redisson Lock ???諛? [{}]", key, e);
+            log.error("Redisson Lock 인터럽트 발생 [{}]", key, e);
             Thread.currentThread().interrupt();
             throw new BusinessException(GlobalErrorCode.INTERNAL_ERROR);
         } finally {
             try {
                 if (rLock.isLocked() && rLock.isHeldByCurrentThread()) {
                     rLock.unlock();
-                    log.debug("Redisson Lock ?댁 [{}]", key);
+                    log.debug("Redisson Lock 해제 [{}]", key);
                 }
             } catch (IllegalMonitorStateException e) {
-                log.warn("Redisson Lock ?대? ?댁??[{}]", key);
+                log.warn("Redisson Lock 해제 실패 [{}]", key);
             }
         }
     }
