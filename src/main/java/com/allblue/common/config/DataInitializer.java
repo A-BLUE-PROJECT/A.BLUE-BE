@@ -62,6 +62,15 @@ public class DataInitializer implements ApplicationRunner {
         save("DUMMY_TOP_F_004", MappedCategory.TOP, "앤더슨벨", "오프숄더 슬리브리스 탑", 79000, 69000,
                 img("여성상의", "6065168_17730409592422_big.webp"));
 
+        save("DUMMY_TOP_M_006", MappedCategory.TOP, "무신사 스탠다드", "베이직 크루넥 니트", 55000, 49000,
+                img("남성상의", "7f770cd225c0f7f1132dd00be6fc2709.jpg"));
+        save("DUMMY_TOP_M_007", MappedCategory.TOP, "커버낫", "체크 플란넬 셔츠", 69000, 65000,
+                img("남성상의", "82db489860ca12cfb241021248142fd9.jpg"));
+        save("DUMMY_TOP_M_008", MappedCategory.TOP, "아더에러", "오버사이즈 코치 재킷", 119000, 119000,
+                img("남성상의", "c17352a1-ddac-4ecb-8307-762a4b064204_fixing_v2.png"));
+        save("DUMMY_TOP_M_009", MappedCategory.TOP, "디스이즈네버댓", "헤비웨이트 후드 스웨트셔츠", 99000, 89000,
+                img("남성상의", "f62f7a4178f43a1fcf3a4128151413c5.jpg"));
+
         // 남성 하의 (BOTTOM) — 남성하의 폴더
         save("DUMMY_BTM_M_001", MappedCategory.BOTTOM, "무신사 스탠다드", "슬림 테이퍼드 데님 팬츠", 49000, 42000,
                 img("남성하의", "5283166_17682662012441_big.webp"));
@@ -69,12 +78,30 @@ public class DataInitializer implements ApplicationRunner {
                 img("남성하의", "detail_3187939_17198083322655_big.webp"));
         save("DUMMY_BTM_M_003", MappedCategory.BOTTOM, "디스이즈네버댓", "나일론 트랙 팬츠", 79000, 79000,
                 img("남성하의", "detail_5863716_17694041028697_big.webp"));
+        save("DUMMY_BTM_M_004", MappedCategory.BOTTOM, "무신사 스탠다드", "릴렉스드 조거 팬츠", 55000, 49000,
+                img("남성하의", "detail_3187939_17198083368326_big.webp"));
+        save("DUMMY_BTM_M_005", MappedCategory.BOTTOM, "커버낫", "와이드 슬랙스", 75000, 69000,
+                img("남성하의", "detail_5956403_17715452374653_big.webp"));
+        save("DUMMY_BTM_M_006", MappedCategory.BOTTOM, "아더에러", "데님 와이드 팬츠", 89000, 89000,
+                img("남성하의", "detail_6001388_17715447502370_big.webp"));
+
+        // 여성 상의 추가 — 여성상의 폴더
+        save("DUMMY_TOP_F_005", MappedCategory.TOP, "무신사 스탠다드", "리브드 슬리브리스 탑", 35000, 29000,
+                img("여성상의", "6157656_17738868741464_big.webp"));
+        save("DUMMY_TOP_F_006", MappedCategory.TOP, "커버낫", "오버핏 스트라이프 셔츠", 65000, 59000,
+                img("여성상의", "6172932_17743709644809_big.webp"));
+        save("DUMMY_TOP_F_007", MappedCategory.TOP, "폴로 랄프로렌", "코튼 피케 카라 티셔츠", 95000, 95000,
+                img("여성상의", "PSS26-TS-05-01_8.jpg"));
 
         // 여성 하의 (BOTTOM) — 여성하의 폴더
         save("DUMMY_BTM_F_001", MappedCategory.BOTTOM, "무신사 스탠다드", "와이드 데님 팬츠", 55000, 49000,
                 img("여성하의", "1762328833000-Ee6Tpn.jpg"));
         save("DUMMY_BTM_F_002", MappedCategory.BOTTOM, "커버낫", "플리츠 미니 스커트", 59000, 59000,
                 img("여성하의", "shopping.webp"));
+        save("DUMMY_BTM_F_003", MappedCategory.BOTTOM, "앤더슨벨", "새틴 미디 스커트", 79000, 69000,
+                img("여성하의", "shopping%20(1).webp"));
+        save("DUMMY_BTM_F_004", MappedCategory.BOTTOM, "무신사 스탠다드", "슬림 스트레이트 데님 팬츠", 49000, 43000,
+                img("여성하의", "shopping%20(2).webp"));
     }
 
     private String img(String folder, String filename) {
