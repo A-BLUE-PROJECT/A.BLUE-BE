@@ -55,3 +55,7 @@ src/main/resources/application-dev.yml
 # yml 파일 이름에 secret이나 prod가 들어간다면 패턴으로 모두 무시
 *secret*.yml
 *prod*.yml
+
+# Lookbook generated images (runtime output, keep folder only)
+data/images/lookbooks/*
+!data/images/lookbooks/.gitkeep

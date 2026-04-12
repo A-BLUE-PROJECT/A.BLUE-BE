@@ -37,7 +37,7 @@ services:
       - N8N_RESTRICT_FILE_ACCESS_TO=/home/node/lookbook-output
     volumes:
       - n8n_data:/home/node/.n8n
-      - ${IMAGE_LOOKBOOK_OUTPUT_PATH:-C:/Users/Windows10/Desktop/A.BLUE/Lookbook Generated}:/home/node/lookbook-output
+      - ${IMAGE_LOOKBOOK_OUTPUT_PATH:-./data/images/lookbooks}:/home/node/lookbook-output
     extra_hosts:
       - "host.docker.internal:host-gateway"
 

@@ -65,9 +65,9 @@ app:
     secure: ${COOKIE_SECURE:false}
   image:
     base-url: ${IMAGE_BASE_URL:http://localhost:8080/images}
-    product-path: ${IMAGE_PRODUCT_PATH:C:/Users/Windows10/Desktop/A.BLUE/Product Image}
-    model-path: ${IMAGE_MODEL_PATH:C:/Users/Windows10/Desktop/A.BLUE/Model asset}
-    lookbook-output-path: ${IMAGE_LOOKBOOK_OUTPUT_PATH:C:/Users/Windows10/Desktop/A.BLUE/Lookbook Generated}
+    product-path: ${IMAGE_PRODUCT_PATH:./data/images/products}
+    model-path: ${IMAGE_MODEL_PATH:./data/images/models}
+    lookbook-output-path: ${IMAGE_LOOKBOOK_OUTPUT_PATH:./data/images/lookbooks}
 
 management:
   endpoints:
