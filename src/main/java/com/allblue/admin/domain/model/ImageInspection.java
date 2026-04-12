@@ -65,6 +65,12 @@ public class ImageInspection extends BaseTimeEntity {
         return new ImageInspection(lookbookImageId, imageUrl);
     }
 
+    public static ImageInspection createAsPassed(Long lookbookImageId, String imageUrl) {
+        ImageInspection inspection = new ImageInspection(lookbookImageId, imageUrl);
+        inspection.status = InspectionStatus.AI_PASSED;
+        return inspection;
+    }
+
     public void updateAiResult(InspectionStatus targetStatus, String aiComment) {
         if (this.status == targetStatus) {
             log.debug("중복 AI 콜백 무시 - inspectionId: {}, status: {}", this.id, this.status);

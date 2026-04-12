@@ -86,7 +86,7 @@ public class LookbookCommandService {
 
         Lookbook saved = lookbookRepository.save(lookbook);
         Long lookbookImageId = saved.getLookbookImage().getId();
-        ImageInspection inspection = ImageInspection.create(lookbookImageId, command.imageUrl());
+        ImageInspection inspection = ImageInspection.createAsPassed(lookbookImageId, command.imageUrl());
         imageInspectionRepository.save(inspection);
     }
 
