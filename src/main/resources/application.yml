@@ -67,6 +67,7 @@ app:
     base-url: ${IMAGE_BASE_URL:http://localhost:8080/images}
     product-path: ${IMAGE_PRODUCT_PATH:C:/Users/Windows10/Desktop/A.BLUE/Product Image}
     model-path: ${IMAGE_MODEL_PATH:C:/Users/Windows10/Desktop/A.BLUE/Model asset}
+    lookbook-output-path: ${IMAGE_LOOKBOOK_OUTPUT_PATH:C:/Users/Windows10/Desktop/A.BLUE/Lookbook Generated}
 
 management:
   endpoints:
@@ -89,7 +90,7 @@ management:
 
 worker:
   n8n:
-    webhook-url: ${N8N_WEBHOOK_URL:http://localhost:5678/webhook/outfit-filter}
+    webhook-url: ${N8N_WEBHOOK_URL:http://127.0.0.1:5678/webhook/outfit-filter}
 
 cafe24:
   client-id: ${CAFE24_CLIENT_ID:your-client-id}

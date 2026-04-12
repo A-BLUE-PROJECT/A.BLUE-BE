@@ -16,6 +16,9 @@ public class WebMvcConfig implements WebMvcConfigurer {
     @Value("${app.image.model-path}")
     private String modelImagePath;
 
+    @Value("${app.image.lookbook-output-path}")
+    private String lookbookOutputPath;
+
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/images/products/**")
@@ -24,7 +27,11 @@ public class WebMvcConfig implements WebMvcConfigurer {
         registry.addResourceHandler("/images/models/**")
                 .addResourceLocations("file:" + modelImagePath + "/");
 
+        registry.addResourceHandler("/images/lookbooks/**")
+                .addResourceLocations("file:" + lookbookOutputPath + "/");
+
         log.info("[WebMvcConfig] 상품 이미지 경로: {}", productImagePath);
         log.info("[WebMvcConfig] 모델 이미지 경로: {}", modelImagePath);
+        log.info("[WebMvcConfig] 룩북 생성 이미지 경로: {}", lookbookOutputPath);
     }
 }
