@@ -1,5 +1,8 @@
 package com.allblue.common.config;
 
+import com.allblue.admin.domain.model.Admin;
+import com.allblue.admin.domain.model.AdminRole;
+import com.allblue.admin.domain.repository.AdminRepository;
 import com.allblue.product.domain.model.Product;
 import com.allblue.product.domain.model.enums.MappedCategory;
 import com.allblue.product.domain.model.enums.StockStatus;
@@ -10,6 +13,7 @@ import org.springframework.beans.factory.annotation.Value;
 import org.springframework.boot.ApplicationArguments;
 import org.springframework.boot.ApplicationRunner;
 import org.springframework.context.annotation.Profile;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Component;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -20,6 +24,8 @@ import org.springframework.transaction.annotation.Transactional;
 public class DataInitializer implements ApplicationRunner {
 
     private final ProductRepository productRepository;
+    private final AdminRepository adminRepository;
+    private final PasswordEncoder passwordEncoder;
 
     @Value("${app.image.base-url}")
     private String imageBaseUrl;
@@ -29,6 +35,8 @@ public class DataInitializer implements ApplicationRunner {
     @Override
     @Transactional
     public void run(ApplicationArguments args) {
+        initAdmin();
+
         if (productRepository.existsByExternalProductId(DUMMY_EXTERNAL_ID_PREFIX + "TOP_M_001")) {
             log.info("[DataInitializer] 더미 상품 데이터가 이미 존재합니다. 초기화를 건너뜁니다.");
             return;
@@ -37,6 +45,17 @@ public class DataInitializer implements ApplicationRunner {
         log.info("[DataInitializer] 더미 상품 데이터 초기화 시작");
         insertDummyProducts();
         log.info("[DataInitializer] 더미 상품 데이터 초기화 완료");
+    }
+
+    private void initAdmin() {
+        String adminEmail = "admin@allblue.com";
+        if (adminRepository.existsByEmail(adminEmail)) {
+            log.info("[DataInitializer] 어드민 계정이 이미 존재합니다.");
+            return;
+        }
+        Admin admin = Admin.create(adminEmail, passwordEncoder.encode("Test1234!"), AdminRole.SUPER_ADMIN);
+        adminRepository.save(admin);
+        log.info("[DataInitializer] 어드민 계정 생성 완료: {}", adminEmail);
     }
 
     private void insertDummyProducts() {
