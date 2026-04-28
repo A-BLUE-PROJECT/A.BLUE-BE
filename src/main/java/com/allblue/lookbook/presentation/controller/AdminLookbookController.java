@@ -6,6 +6,7 @@ import com.allblue.common.response.ApiResponse;
 import com.allblue.lookbook.application.LookbookCommandService;
 import com.allblue.lookbook.application.LookbookQueryService;
 import com.allblue.lookbook.domain.model.enums.LookbookStatus;
+import com.allblue.lookbook.presentation.response.LookbookDetailResponse;
 import com.allblue.lookbook.presentation.response.LookbookResponse;
 import com.allblue.lookbook.presentation.response.LookbookResultCode;
 import java.util.List;
@@ -52,6 +53,15 @@ public class AdminLookbookController implements AdminLookbookApi {
         return ResponseEntity
                 .status(LookbookResultCode.LOOKBOOK_LIST_OK.status())
                 .body(ApiResponse.of(LookbookResultCode.LOOKBOOK_LIST_OK, response));
+    }
+
+    @Override
+    @GetMapping("/{id}")
+    public ResponseEntity<ApiResponse<LookbookDetailResponse>> findById(@PathVariable Long id) {
+        LookbookDetailResponse response = LookbookDetailResponse.from(lookbookQueryService.findById(id));
+        return ResponseEntity
+                .status(LookbookResultCode.LOOKBOOK_DETAIL_OK.status())
+                .body(ApiResponse.of(LookbookResultCode.LOOKBOOK_DETAIL_OK, response));
     }
 
     @Override

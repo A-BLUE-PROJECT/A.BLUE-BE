@@ -39,6 +39,15 @@ public interface AdminLookbookApi {
             @Parameter(description = "룩북 상태 필터 (PENDING, COMPLETED, APPROVED, REJECTED, FAILED). 미입력 시 전체 조회")
             @RequestParam(required = false) LookbookStatus status);
 
+    @Operation(summary = "룩북 상세 조회", description = "룩북 ID로 상세 정보(연결 상품 포함)를 조회합니다.")
+    @ApiResponses(value = {
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "조회 성공 (SLB20002)"),
+        @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "404", description = "룩북 없음 (ELB40401)")
+    })
+    @ApiErrorExceptions(LookbookErrorCode.class)
+    ResponseEntity<ApiResponse<com.allblue.lookbook.presentation.response.LookbookDetailResponse>> findById(
+            @Parameter(description = "룩북 ID") @PathVariable Long id);
+
     @Operation(summary = "룩북 승인", description = "룩북을 승인하여 B2C 갤러리에 노출합니다. 승인 시 Redis 캐시가 무효화됩니다.")
     @ApiResponses(value = {
         @io.swagger.v3.oas.annotations.responses.ApiResponse(responseCode = "200", description = "승인 성공 (SLB20006)"),
