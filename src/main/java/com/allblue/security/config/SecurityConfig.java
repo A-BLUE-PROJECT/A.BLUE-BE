@@ -50,11 +50,14 @@ public class SecurityConfig {
                                 "/v3/api-docs/**",
                                 "/v3/api-docs",
                                 "/actuator/**",
-                                "/i/v1/crawl/**",
                                 "/i/v1/inspections/**",
-                                "/w/v1/cards",
+                                "/i/v1/lookbooks/*/complete",
+                                "/i/v1/lookbooks/*/fail",
                                 "/w/v1/auth/refresh",
-                                "/w/v1/decks/shared/*/cards")
+                                "/w/v1/auth/logout",
+                                "/w/v1/lookbooks",
+                                "/w/v1/lookbooks/**",
+                                "/images/**")
                         .permitAll()
                         .anyRequest()
                         .authenticated())

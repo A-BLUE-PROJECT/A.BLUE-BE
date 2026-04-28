@@ -15,7 +15,7 @@ public class OpenApiConfig {
     public OpenAPI openAPI() {
         return new OpenAPI()
                 .info(new Info()
-                        .title("DEKK API")
+                        .title("ALLBLUE API")
                         .description("API Documentation")
                         .version("v1.0.0"))
                 .components(new Components()

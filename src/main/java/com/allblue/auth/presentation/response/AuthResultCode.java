@@ -6,8 +6,8 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 public enum AuthResultCode implements ResultCode {
-    TOKEN_REFRESH_SUCCESS(HttpStatus.OK, "SA20001", "????щ?湲??깃났"),
-    LOGOUT_SUCCESS(HttpStatus.OK, "SA20002", "濡洹?? ?깃났");
+    TOKEN_REFRESH_SUCCESS(HttpStatus.OK, "SA20001", "토큰 갱신이 완료되었습니다."),
+    LOGOUT_SUCCESS(HttpStatus.OK, "SA20002", "로그아웃이 완료되었습니다.");
 
     private final HttpStatus status;
     private final String code;

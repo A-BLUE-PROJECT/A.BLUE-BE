@@ -25,8 +25,6 @@ import lombok.AccessLevel;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.hibernate.annotations.Filter;
-import org.hibernate.annotations.FilterDef;
-import org.hibernate.annotations.ParamDef;
 import org.hibernate.annotations.SQLDelete;
 
 @Getter
@@ -34,7 +32,6 @@ import org.hibernate.annotations.SQLDelete;
 @Table(name = "lookbooks")
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
 @SQLDelete(sql = "UPDATE lookbooks SET deleted_at = now() WHERE id = ?")
-@FilterDef(name = "deletedFilter", parameters = @ParamDef(name = "isDeleted", type = Boolean.class))
 @Filter(name = "deletedFilter", condition = "deleted_at IS NULL")
 public class Lookbook extends BaseTimeEntity {
 
@@ -61,17 +58,27 @@ public class Lookbook extends BaseTimeEntity {
     @Column(name = "status", nullable = false)
     private LookbookStatus status;
 
+    @Column(name = "ai_score")
+    private Integer aiScore;
+
+    @Column(name = "model_image_url")
+    private String modelImageUrl;
+
+    @Column(name = "retry_count", nullable = false)
+    private int retryCount = 0;
+
     @OneToOne(mappedBy = "lookbook", cascade = CascadeType.ALL, orphanRemoval = true)
     private LookbookImage lookbookImage;
 
     @OneToMany(mappedBy = "lookbook", cascade = CascadeType.ALL, orphanRemoval = true)
     private List<LookbookItem> lookbookItems = new ArrayList<>();
 
-    private Lookbook(StyleType styleType, Season season, TargetGender targetGender, String tags) {
+    private Lookbook(StyleType styleType, Season season, TargetGender targetGender, String tags, String modelImageUrl) {
         this.styleType = styleType;
         this.season = season;
         this.targetGender = targetGender;
         this.tags = tags;
+        this.modelImageUrl = modelImageUrl;
         this.status = LookbookStatus.PENDING;
     }
 
@@ -80,23 +87,48 @@ public class Lookbook extends BaseTimeEntity {
             Season season,
             TargetGender targetGender,
             String tags,
+            String modelImageUrl,
             List<LookbookItemInfo> items) {
-        Lookbook lookbook = new Lookbook(styleType, season, targetGender, tags);
+        Lookbook lookbook = new Lookbook(styleType, season, targetGender, tags, modelImageUrl);
         items.stream()
                 .map(item -> LookbookItem.create(lookbook, item.productId(), item.position()))
                 .forEach(lookbook.lookbookItems::add);
         return lookbook;
     }
 
-    public void complete(String originUrl, String imageUrl) {
+    public void complete(String originUrl, String imageUrl, Integer aiScore) {
         validateStatusIsPending();
         this.lookbookImage = LookbookImage.create(this, originUrl, imageUrl);
         this.status = LookbookStatus.COMPLETED;
+        this.aiScore = aiScore;
     }
 
     public void fail() {
         validateStatusIsPending();
         this.status = LookbookStatus.FAILED;
+    }
+
+    public void approve() {
+        if (this.status != LookbookStatus.COMPLETED) {
+            throw new LookbookBusinessException(LookbookErrorCode.LOOKBOOK_STATUS_NOT_COMPLETED);
+        }
+        this.status = LookbookStatus.APPROVED;
+    }
+
+    public void reject() {
+        if (this.status != LookbookStatus.COMPLETED) {
+            throw new LookbookBusinessException(LookbookErrorCode.LOOKBOOK_STATUS_NOT_COMPLETED);
+        }
+        this.status = LookbookStatus.REJECTED;
+    }
+
+    public boolean incrementRetryOrFail() {
+        this.retryCount++;
+        if (this.retryCount >= 3) {
+            this.status = LookbookStatus.FAILED;
+            return false;
+        }
+        return true;
     }
 
     private void validateStatusIsPending() {

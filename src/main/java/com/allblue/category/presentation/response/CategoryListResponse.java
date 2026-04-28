@@ -1,6 +1,6 @@
 package com.allblue.category.presentation.response;
 
-import com.allblue.category.application.dto.CategoryListResult;
+import com.allblue.category.application.dto.result.CategoryListResult;
 import java.util.List;
 
 public record CategoryListResponse(Long categoryId, String name, List<ChildCategoryResponse> children) {

@@ -4,7 +4,7 @@ import com.allblue.auth.domain.exception.AuthErrorCode;
 import com.allblue.security.oauth2.CustomUserDetails;
 import com.allblue.security.oauth2.OAuth2UserInfoFactory;
 import com.allblue.security.oauth2.dto.OAuth2UserInfo;
-import com.allblue.user.application.command.UserCreateCommand;
+import com.allblue.user.application.dto.command.UserCreateCommand;
 import com.allblue.user.domain.model.User;
 import com.allblue.user.domain.model.enums.Provider;
 import com.allblue.user.domain.repository.UserRepository;

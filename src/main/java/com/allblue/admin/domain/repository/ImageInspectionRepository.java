@@ -12,6 +12,8 @@ public interface ImageInspectionRepository {
 
     ImageInspection getByLookbookImageId(Long lookbookImageId);
 
+    ImageInspection getByLookbookId(Long lookbookId);
+
     Optional<ImageInspection> findByLookbookImageId(Long lookbookImageId);
 
     Page<ImageInspection> getByStatuses(List<InspectionStatus> statuses, Pageable pageable);

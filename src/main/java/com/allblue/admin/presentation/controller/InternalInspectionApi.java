@@ -10,10 +10,10 @@ import jakarta.validation.Valid;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RequestBody;
 
-@Tag(name = "?대? ?????듭 肄諛?API", description = "?대? ????n8n) ?듭 寃??肄諛?? API")
+@Tag(name = "내부 검수 콜백 API", description = "검수 시스템(n8n)에서 수신하는 결과 콜백 API")
 public interface InternalInspectionApi {
 
-    @Operation(summary = "AI 寃??寃곌낵 肄諛???")
+    @Operation(summary = "AI 검수 결과 콜백 수신")
     @ApiErrorExceptions(AdminErrorCode.class)
     ResponseEntity<ApiResponse<Void>> handleCallback(@Valid @RequestBody InspectionCallbackRequest request);
 }

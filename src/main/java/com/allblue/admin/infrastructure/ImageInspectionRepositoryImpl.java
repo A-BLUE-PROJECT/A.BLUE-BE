@@ -39,6 +39,13 @@ public class ImageInspectionRepositoryImpl implements ImageInspectionRepository 
     }
 
     @Override
+    public ImageInspection getByLookbookId(Long lookbookId) {
+        return imageInspectionJpaRepository
+                .findByLookbookId(lookbookId)
+                .orElseThrow(() -> new AdminBusinessException(AdminErrorCode.INSPECTION_NOT_FOUND));
+    }
+
+    @Override
     public Page<ImageInspection> getByStatuses(List<InspectionStatus> statuses, Pageable pageable) {
         return imageInspectionJpaRepository.findByStatusIn(statuses, pageable);
     }

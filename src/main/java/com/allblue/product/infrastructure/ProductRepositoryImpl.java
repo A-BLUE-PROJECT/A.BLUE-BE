@@ -1,6 +1,7 @@
 package com.allblue.product.infrastructure;
 
 import com.allblue.product.domain.model.Product;
+import com.allblue.product.domain.model.enums.MappedCategory;
 import com.allblue.product.domain.repository.ProductRepository;
 import com.allblue.product.infrastructure.jpa.ProductJpaRepository;
 import java.util.List;
@@ -42,5 +43,10 @@ public class ProductRepositoryImpl implements ProductRepository {
     @Override
     public boolean existsByExternalProductId(String externalProductId) {
         return productJpaRepository.existsByExternalProductId(externalProductId);
+    }
+
+    @Override
+    public List<Product> findAllForAdmin(MappedCategory category) {
+        return productJpaRepository.findAllForAdmin(category);
     }
 }

@@ -1,0 +1,19 @@
+package com.allblue.lookbook.application.dto;
+
+import java.util.List;
+
+public record AiWorkerPayload(
+        Long lookbookId,
+        String styleType,
+        String season,
+        String targetGender,
+        String prompt,
+        String modelImageUrl,
+        List<ProductInfo> products) {
+
+    public record ProductInfo(
+            Long productId,
+            String category,
+            String position,
+            String imageUrl) {}
+}

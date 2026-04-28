@@ -1,6 +1,6 @@
 package com.allblue.category.presentation.request;
 
-import com.allblue.category.application.command.UpdateCategoryNameCommand;
+import com.allblue.category.application.dto.command.UpdateCategoryNameCommand;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 

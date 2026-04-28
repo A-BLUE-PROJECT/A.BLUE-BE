@@ -40,10 +40,10 @@ class AdminAuthServiceTest {
     private AdminJwtTokenProvider adminJwtTokenProvider;
 
     @Test
-    @DisplayName("관리자 로그???�공")
+    @DisplayName("관리자 로그인 성공")
     void login_success() {
         // given
-        String email = "admin@dekk.com";
+        String email = "admin@allblue.com";
         String password = "password";
         AdminLoginCommand command = new AdminLoginCommand(email, password);
         Admin admin = mock(Admin.class);
@@ -64,10 +64,10 @@ class AdminAuthServiceTest {
     }
 
     @Test
-    @DisplayName("관리자 로그???�패 - 존재?��? ?�는 ?�메??)
+    @DisplayName("관리자 로그인 실패 - 존재하지 않는 이메일")
     void login_fail_not_found_email() {
         // given
-        String email = "notfound@dekk.com";
+        String email = "notfound@allblue.com";
         AdminLoginCommand command = new AdminLoginCommand(email, "password");
 
         given(adminRepository.findByEmail(email)).willReturn(Optional.empty());
@@ -79,10 +79,10 @@ class AdminAuthServiceTest {
     }
 
     @Test
-    @DisplayName("관리자 로그???�패 - 비�?번호 불일�?)
+    @DisplayName("관리자 로그인 실패 - 비밀번호 불일치")
     void login_fail_invalid_password() {
         // given
-        String email = "admin@dekk.com";
+        String email = "admin@allblue.com";
         String password = "wrongpassword";
         AdminLoginCommand command = new AdminLoginCommand(email, password);
         Admin admin = mock(Admin.class);

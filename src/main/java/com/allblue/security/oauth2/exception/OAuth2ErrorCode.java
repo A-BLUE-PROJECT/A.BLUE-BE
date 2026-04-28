@@ -6,10 +6,10 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 public enum OAuth2ErrorCode implements ErrorCode {
-    MISSING_USER_INFO(HttpStatus.BAD_REQUEST, "EA40001", "?? 濡洹???怨?濡遺???? ?ъ???蹂대?諛? 紐삵?듬??"),
-    UNSUPPORTED_PROVIDER(HttpStatus.BAD_REQUEST, "EA40002", "吏??吏 ?? ?? 濡洹???怨?????"),
+    MISSING_USER_INFO(HttpStatus.BAD_REQUEST, "EA40001", "소셜 로그인 사용자 정보를 불러오는데 실패했습니다."),
+    UNSUPPORTED_PROVIDER(HttpStatus.BAD_REQUEST, "EA40002", "지원하지 않는 소셜 로그인 제공자입니다."),
 
-    OAUTH2_AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "EA40003", "?? 濡洹???몄????ㅽ?????");
+    OAUTH2_AUTHENTICATION_FAILED(HttpStatus.UNAUTHORIZED, "EA40003", "소셜 로그인 인증에 실패했습니다.");
 
     private final HttpStatus httpStatus;
     private final String code;

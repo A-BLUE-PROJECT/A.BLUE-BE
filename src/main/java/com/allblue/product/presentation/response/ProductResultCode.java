@@ -6,7 +6,9 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 public enum ProductResultCode implements ResultCode {
-    PRODUCT_BATCH_CREATED("SPD20101", "상품 배치 등록이 완료되었습니다.", HttpStatus.CREATED);
+    PRODUCT_BATCH_CREATED("SPD20101", "상품 배치 등록이 완료되었습니다.", HttpStatus.CREATED),
+    PRODUCT_LIST_OK("SPD20001", "상품 목록 조회가 완료되었습니다.", HttpStatus.OK),
+    PRODUCT_HIDDEN_UPDATED("SPD20002", "상품 노출 상태가 변경되었습니다.", HttpStatus.OK);
 
     private final String code;
     private final String message;

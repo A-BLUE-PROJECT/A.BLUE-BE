@@ -7,32 +7,61 @@
 
 ```
 com.allblue
-├── seller      # 카페24 OAuth 연동, Access Token 관리
-├── product     # 독립 상품 엔티티, 카페24 상품 동기화
+├── seller      # 카페24 OAuth 연동, Access Token 관리 (Phase 3)
+├── product     # 독립 상품 엔티티 (MVP는 더미 데이터)
 ├── lookbook    # AI 룩북 핵심 도메인 (Lookbook / LookbookItem / LookbookImage)
-├── user        # 사용자 + FitProfile
-├── admin       # 어드민 (룩북 검수)
+├── user        # 사용자 (Profile 포함, FitProfile 제거됨)
+├── admin       # 어드민 인증 + 룩북 검수 (ImageInspection)
 ├── auth        # JWT / OAuth2 인증
-├── activelog   # 스와이프 로그
 ├── category    # 카테고리 정규화 (TOP/BOTTOM/SHOES/OUTER/ACC)
 ├── common      # BaseTimeEntity, ApiResponse, PageResponse, BusinessException
-├── global      # 글로벌 설정
 └── security    # Spring Security 설정
 ```
 
 ---
 
+## Code Generation Rules
+
+> **코드를 생성하기 전에 반드시 아래 문서들을 참고한다.**
+
+| 문서 | 참고 시점 |
+| :--- | :--- |
+| `docs/architecture/CONVENTIONS.md` | 모든 코드 생성 시 (Entity, DTO, Service, Controller 등) |
+| `docs/architecture/ARCHITECTURE.md` | 도메인 모델·플로우·URL 설계 시 |
+| `docs/design/SERVICE_DESIGN.md` | 기능 기획 확인 시 |
+| `docs/frontend/PLAN_*.md` | Milestone별 구현 시 |
+
+### 코드 출력 전 Self-Critique Checklist
+
+- [ ] `docs/architecture/CONVENTIONS.md` 의 규칙을 전부 확인했는가?
+- [ ] Entity에 `@Builder` / `@Setter` / `@Data` 없는가?
+- [ ] Controller에 비즈니스 로직 없는가?
+- [ ] Swagger 어노테이션이 `...Api` 인터페이스에만 있는가?
+- [ ] 예외가 `[Domain]BusinessException` + `[Domain]ErrorCode` 계층을 따르는가?
+- [ ] Result Code는 `S`로, Error Code는 `E`로 시작하는가? (혼용 금지)
+- [ ] 목록 응답에 `PageResponse` 사용했는가?
+- [ ] Phase 승인 없이 다음 단계로 진행하려 하는가? → 멈추고 승인 요청
+
+---
+
 ## Key Constraints (요약)
 
-상세 규칙 → `docs/CONVENTIONS.md`
+상세 규칙 → `docs/architecture/CONVENTIONS.md`
 
 1. Entity: `@Getter` + `@NoArgsConstructor(PROTECTED)` + `create()` 팩토리만. `@Setter/@Builder/@Data` 금지.
 2. DI: `@RequiredArgsConstructor` + `private final`. `@Autowired` 금지.
 3. DTO: 모두 `record`.
-4. Exception: `[Domain]BusinessException` + `[Domain]ErrorCode` 필수.
+4. Exception: `[Domain]BusinessException` + `[Domain]ErrorCode` 필수. ResultCode(`S`)와 ErrorCode(`E`) 혼용 금지.
 5. Response: `ApiResponse<T>` 래핑. 목록은 `PageResponse`.
-6. API Path: `/w/v1/[domains]` (유저) · `/i/v1/[domain]` (내부) · `/adm/[domain]` (어드민)
+6. API Path: `/w/v1/[domain]` (유저) · `/i/v1/[domain]` (내부) · `/adm/v1/[domain]` (어드민) · `/s/v1/[domain]` (셀러)
 7. Result Code: `[S/E][Domain][HTTP][Seq2]` 형식 (예: `SLB20001`, `ESL40001`)
+
+---
+
+## Git 규칙
+
+- **커밋은 사용자가 명시적으로 요청할 때만** 생성한다.
+- **푸쉬(push)는 사용자가 명시적으로 요청할 때만** 실행한다. 커밋 후 자동으로 푸쉬하지 않는다.
 
 ---
 
@@ -53,16 +82,16 @@ com.allblue
 
 ```
 docs/
-├── ARCHITECTURE.md        # 시스템 설계 상세
-├── CONVENTIONS.md         # 코딩 컨벤션 상세
-├── full-service-design.md # 서비스 기획 전문
-├── domain-model-changes.md
-├── technical-architecture.md
-├── service-overview.md
-├── roadmap.md
-├── plan/                  # 진행 중인 작업 플랜
-├── draft/                 # 초안
-└── review/                # 리뷰·검증
+├── design/                # 현재 서비스 기획 & 설계
+│   └── SERVICE_DESIGN.md  # 최신 서비스 설계서 (기준 문서)
+├── architecture/          # 기술 아키텍처 & 컨벤션
+│   ├── ARCHITECTURE.md
+│   └── CONVENTIONS.md
+├── frontend/              # 프론트엔드 현황 & 연동 요구사항
+│   ├── FRONTEND_PROGRESS_FOR_BACKEND.md
+│   └── PLAN*.md
+└── archive/               # 완료된 작업 / 구버전 문서 (참고용)
+    └── plan/
 ```
 
-현재 진행 플랜 → `docs/plan/plan.md`
+서비스 설계 기준 문서 → `docs/design/SERVICE_DESIGN.md`

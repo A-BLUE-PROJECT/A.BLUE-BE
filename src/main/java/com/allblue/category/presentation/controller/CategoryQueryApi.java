@@ -11,34 +11,34 @@ import java.util.List;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 
-@Tag(name = "愿由ъ 移댄怨由?議고 API", description = "愿由ъ媛 移댄怨由щ?議고?? API")
+@Tag(name = "카테고리 조회 API", description = "카테고리 트리 구조를 조회하는 API")
 public interface CategoryQueryApi {
 
-    @Operation(summary = "?泥?移댄怨由??몃━ 議고", description = "紐⑤ ?? 移댄怨由? ?? 移댄怨由щ??몃━ 援ъ“濡?議고?⑸??")
+    @Operation(summary = "전체 카테고리 트리 조회", description = "모든 카테고리 및 하위 카테고리를 트리 구조로 조회합니다")
     @ApiResponses(
             value = {
                 @io.swagger.v3.oas.annotations.responses.ApiResponse(
                         responseCode = "200",
-                        description = "移댄怨由??몃━ 議고 ?깃났",
+                        description = "카테고리 트리 조회가 완료되었습니다",
                         content =
                                 @Content(
                                         mediaType = MediaType.APPLICATION_JSON_VALUE,
                                         examples = @ExampleObject(value = """
                                     {
                                       "code": "SCT20010",
-                                      "message": "移댄怨由??몃━ 議고 ?깃났",
+                                      "message": "카테고리 트리 조회가 완료되었습니다",
                                       "data": [
                                         {
                                           "categoryId": 1,
-                                          "name": "怨?",
+                                          "name": "상의",
                                           "children": [
                                             {
                                               "categoryId": 2,
-                                              "name": "遊?
+                                              "name": "하의"
                                             },
                                             {
                                               "categoryId": 3,
-                                              "name": "?щ?"
+                                              "name": "원피스"
                                             }
                                           ]
                                         }

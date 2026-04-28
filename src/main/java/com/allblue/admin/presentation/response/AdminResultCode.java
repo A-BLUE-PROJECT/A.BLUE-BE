@@ -6,11 +6,11 @@ import org.springframework.http.HttpStatus;
 
 @RequiredArgsConstructor
 public enum AdminResultCode implements ResultCode {
-    ADMIN_LOGIN_SUCCESS(HttpStatus.OK, "SAD20001", "愿由ъ 濡洹?몄 ?깃났?????"),
-    ADMIN_LOGOUT_SUCCESS(HttpStatus.OK, "SAD20002", "愿由ъ 濡洹?????깃났?????"),
-    INSPECTION_STATUS_UPDATED(HttpStatus.OK, "SAD20003", "?대?吏 寃????媛 ?깃났??쇰?蹂寃쎈?????"),
-    INSPECTION_LIST_QUERIED(HttpStatus.OK, "SAD20004", "?대?吏 寃??紐⑸? 議고???깃났?????"),
-    INSPECTION_CALLBACK_SUCCESS(HttpStatus.OK, "SAD20005", "AI 寃??寃곌낵媛 ?깃났??쇰?諛????듬??");
+    ADMIN_LOGIN_SUCCESS(HttpStatus.OK, "SAD20001", "어드민 로그인이 완료되었습니다."),
+    ADMIN_LOGOUT_SUCCESS(HttpStatus.OK, "SAD20002", "어드민 로그아웃이 완료되었습니다."),
+    INSPECTION_STATUS_UPDATED(HttpStatus.OK, "SAD20003", "검수 상태 변경이 완료되었습니다."),
+    INSPECTION_LIST_QUERIED(HttpStatus.OK, "SAD20004", "검수 목록 조회가 완료되었습니다."),
+    INSPECTION_CALLBACK_SUCCESS(HttpStatus.OK, "SAD20005", "AI 검수 결과 반영이 완료되었습니다.");
 
     private final HttpStatus status;
     private final String code;

@@ -17,13 +17,28 @@ public record LookbookDetailResponse(
         LookbookStatus status,
         String originUrl,
         String imageUrl,
+        Integer aiScore,
         List<LookbookItemResponse> items) {
 
-    public record LookbookItemResponse(Long productId, Position position) {}
+    public record LookbookItemResponse(
+            Long productId,
+            Position position,
+            String brandName,
+            String productName,
+            Integer price,
+            String productImageUrl,
+            String originUrl) {}
 
     public static LookbookDetailResponse from(LookbookDetailResult result) {
         List<LookbookItemResponse> items = result.items().stream()
-                .map(item -> new LookbookItemResponse(item.productId(), item.position()))
+                .map(item -> new LookbookItemResponse(
+                        item.productId(),
+                        item.position(),
+                        item.brandName(),
+                        item.productName(),
+                        item.price(),
+                        item.productImageUrl(),
+                        item.originUrl()))
                 .toList();
         return new LookbookDetailResponse(
                 result.id(),
@@ -34,6 +49,7 @@ public record LookbookDetailResponse(
                 result.status(),
                 result.originUrl(),
                 result.imageUrl(),
+                result.aiScore(),
                 items);
     }
 }

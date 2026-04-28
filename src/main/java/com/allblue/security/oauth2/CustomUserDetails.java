@@ -65,7 +65,7 @@ public class CustomUserDetails implements UserDetails, OAuth2User {
         return email;
     }
 
-    // Todo : 異???愿由ъ 濡洹??諛??泥?濡洹?몄?異? ??ㅻ??? 濡洹??????援щ????怨? ?? 愿由???
+    // Todo : 마이그레이션 후 어드민 로그인 처리 - 로그인 가능한 상태로 변경 후 어드민 토큰 발급
     @Override
     public boolean isAccountNonExpired() {
         return true;

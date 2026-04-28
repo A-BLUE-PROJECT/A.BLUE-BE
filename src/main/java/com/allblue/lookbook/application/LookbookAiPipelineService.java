@@ -1,7 +1,7 @@
 package com.allblue.lookbook.application;
 
-import com.allblue.lookbook.application.port.out.AiWorkerClient;
-import com.allblue.lookbook.application.port.out.AiWorkerPayload;
+import com.allblue.lookbook.application.AiWorkerClient;
+import com.allblue.lookbook.application.dto.AiWorkerPayload;
 import com.allblue.lookbook.domain.exception.LookbookBusinessException;
 import com.allblue.lookbook.domain.exception.LookbookErrorCode;
 import com.allblue.lookbook.domain.model.Lookbook;
@@ -11,8 +11,11 @@ import com.allblue.product.domain.model.Product;
 import com.allblue.product.domain.repository.ProductRepository;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.stream.Collectors;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
+import org.springframework.scheduling.annotation.Scheduled;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -21,12 +24,15 @@ import org.springframework.transaction.annotation.Transactional;
 @RequiredArgsConstructor
 public class LookbookAiPipelineService {
 
+    private static final int PENDING_THRESHOLD_MINUTES = 10;
+    private static final int MAX_RETRY_COUNT = 3;
+
     private final LookbookRepository lookbookRepository;
     private final ProductRepository productRepository;
     private final AiWorkerClient aiWorkerClient;
 
     /**
-     * 1. 룩북 생성 요청 (PENDING 상태의 룩북을 AI 워커로 전송)
+     * PENDING 상태의 룩북을 AI 워커로 전송 (직접 호출 또는 재시도 스케줄러에서 사용)
      */
     @Transactional(readOnly = true)
     public void triggerGeneration(Long lookbookId) {
@@ -38,47 +44,56 @@ public class LookbookAiPipelineService {
             return;
         }
 
-        // 1. 룩북에 포함된 상품들의 실제 정보를 조회
+        List<Long> productIds = lookbook.getLookbookItems().stream()
+                .map(item -> item.getProductId())
+                .toList();
+
+        Map<Long, Product> productMap = productRepository.findAllByIds(productIds).stream()
+                .collect(Collectors.toMap(Product::getId, p -> p));
+
         List<AiWorkerPayload.ProductInfo> productInfos = lookbook.getLookbookItems().stream()
                 .map(item -> {
-                    // TODO: Product 도메인이 독립되어 있으므로 Fetch 제어가 필요함. MVP 단계에선 단순 조회.
-                    Product product = productRepository.findById(item.getProductId())
-                            .orElseThrow(() -> new LookbookBusinessException(LookbookErrorCode.PRODUCT_NOT_FOUND));
-                    
+                    Product product = productMap.get(item.getProductId());
                     return new AiWorkerPayload.ProductInfo(
-                            product.getId(),
-                            product.getMappedCategory() != null ? product.getMappedCategory().name() : "UNKNOWN",
+                            item.getProductId(),
+                            product != null ? product.getMappedCategory().name() : null,
                             item.getPosition().name(),
-                            product.getProductImageUrl()
-                    );
+                            product != null ? product.getProductImageUrl() : null);
                 })
                 .toList();
 
-        // 2. AI 워커에게 전송할 페이로드 구성
         AiWorkerPayload payload = new AiWorkerPayload(
                 lookbook.getId(),
                 lookbook.getStyleType().name(),
                 lookbook.getSeason().name(),
-                lookbook.getTargetGender().name(),
-                productInfos
-        );
+                lookbook.getTargetGender() != null ? lookbook.getTargetGender().name() : null,
+                null,
+                lookbook.getModelImageUrl(),
+                productInfos);
 
-        // 3. 비동기 워커 호출 (의존성 역전)
         log.info("Triggering AI generation for Lookbook {}", lookbookId);
         aiWorkerClient.requestGeneration(payload);
     }
 
     /**
-     * 2. PENDING 상태로 오래 머물러 있는 룩북 재시도 (스케줄러에서 호출)
+     * PENDING 상태로 10분 이상 머물러 있는 룩북 재시도 (최대 3회, 초과 시 FAILED 처리)
      */
-    @Transactional(readOnly = true)
-    public void retryPendingLookbooks(int minutesThreshold) {
-        LocalDateTime thresholdTime = LocalDateTime.now().minusMinutes(minutesThreshold);
-        List<Lookbook> pendingLookbooks = lookbookRepository.findByStatusAndCreatedAtBefore(LookbookStatus.PENDING, thresholdTime);
-        
-        log.info("Found {} pending lookbooks older than {} minutes. Retrying...", pendingLookbooks.size(), minutesThreshold);
-        
+    @Scheduled(fixedDelay = 600_000)
+    @Transactional
+    public void retryPendingLookbooks() {
+        LocalDateTime threshold = LocalDateTime.now().minusMinutes(PENDING_THRESHOLD_MINUTES);
+        List<Lookbook> pendingLookbooks = lookbookRepository.findByStatusAndCreatedAtBefore(LookbookStatus.PENDING, threshold);
+
+        log.info("Found {} pending lookbooks older than {} minutes. Retrying...", pendingLookbooks.size(), PENDING_THRESHOLD_MINUTES);
+
         for (Lookbook lookbook : pendingLookbooks) {
+            boolean canRetry = lookbook.incrementRetryOrFail();
+            if (!canRetry) {
+                log.warn("Lookbook {} exceeded max retry count ({}). Marked as FAILED.", lookbook.getId(), MAX_RETRY_COUNT);
+                lookbookRepository.save(lookbook);
+                continue;
+            }
+            lookbookRepository.save(lookbook);
             try {
                 triggerGeneration(lookbook.getId());
             } catch (Exception e) {

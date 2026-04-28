@@ -1,22 +1,22 @@
+name: ablue
+
 services:
   postgres:
     image: postgres:16-alpine
-    container_name: dekk-postgres
+    container_name: allblue-postgres
     restart: always
     ports:
-      - "65432:5432"
+      - "5432:5432"
     environment:
-      POSTGRES_USER: dekk_user
-      POSTGRES_PASSWORD: dekk_password
-      POSTGRES_DB: dekk
+      POSTGRES_USER: ${DB_USERNAME:-postgres}
+      POSTGRES_PASSWORD: ${DB_PASSWORD:-allblue_password}
+      POSTGRES_DB: ${DB_NAME:-allblue}
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    networks:
-      - db-network
 
   redis:
     image: redis:7-alpine
-    container_name: dekk-redis
+    container_name: allblue-redis
     restart: always
     ports:
       - "6379:6379"
@@ -25,72 +25,23 @@ services:
 
   n8n:
     image: n8nio/n8n:latest
-    container_name: dekk-n8n
+    container_name: allblue-n8n
     restart: always
     ports:
       - "5678:5678"
     environment:
       - GENERIC_TIMEZONE=Asia/Seoul
       - TZ=Asia/Seoul
+      - GEMINI_API_KEY=${GEMINI_API_KEY}
+      - NODE_FUNCTION_ALLOW_BUILTIN=https,http,url,buffer
+      - N8N_RESTRICT_FILE_ACCESS_TO=/home/node/lookbook-output
     volumes:
       - n8n_data:/home/node/.n8n
+      - ${IMAGE_LOOKBOOK_OUTPUT_PATH:-./data/images/lookbooks}:/home/node/lookbook-output
     extra_hosts:
       - "host.docker.internal:host-gateway"
-
-  prometheus:
-    image: prom/prometheus:v2.53.0
-    container_name: dekk-prometheus
-    command:
-      - --config.file=/etc/prometheus/prometheus.yml
-      - --web.enable-lifecycle
-    ports:
-      - "9090:9090"
-    volumes:
-      - ./monitoring/prometheus/prometheus.yml:/etc/prometheus/prometheus.yml:ro
-      - ./monitoring/prometheus/alert-rules.yml:/etc/prometheus/alert-rules.yml:ro
-      - prometheus-data:/prometheus
-    networks:
-      - monitoring-network
-
-  loki:
-    image: grafana/loki:3.1.0
-    container_name: dekk-loki
-    command: -config.file=/etc/loki/local-config.yaml
-    ports:
-      - "3100:3100"
-    volumes:
-      - loki-data:/loki
-    networks:
-      - monitoring-network
-
-  grafana:
-    image: grafana/grafana:11.1.0
-    container_name: grafana
-    ports:
-      - "3000:3000"
-    environment:
-      - GF_SECURITY_ADMIN_USER=admin
-      - GF_SECURITY_ADMIN_PASSWORD=admin
-    volumes:
-      - ./monitoring/grafana/provisioning:/etc/grafana/provisioning:ro
-      - ./monitoring/grafana/dashboards:/var/lib/grafana/dashboards:ro
-      - grafana-data:/var/lib/grafana
-    depends_on:
-      - prometheus
-      - loki
-    networks:
-      - monitoring-network
 
 volumes:
   postgres_data:
   redis_data:
   n8n_data:
-  prometheus-data:
-  loki-data:
-  grafana-data:
-
-networks:
-  db-network:
-    driver: bridge
-  monitoring-network:
-    driver: bridge

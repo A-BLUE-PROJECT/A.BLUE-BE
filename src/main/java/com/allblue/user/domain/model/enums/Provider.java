@@ -5,8 +5,7 @@ import com.allblue.security.oauth2.exception.OAuth2ErrorCode;
 import java.util.Arrays;
 
 public enum Provider {
-    GOOGLE,
-    KAKAO;
+    GOOGLE;
 
     public static Provider from(String registrationId) {
         return Arrays.stream(Provider.values())
