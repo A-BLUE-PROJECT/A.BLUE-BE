@@ -152,9 +152,9 @@ LookbookAiPipelineService → Webhook 호출
 
 **실제 합성 결과물 (n8n + Gemini API):**
 
-| 룩북 예시 1 | 룩북 예시 2 |
-|:-----------:|:-----------:|
-| ![lookbook-1](assets/lookbook-1.png) | ![lookbook-5](assets/lookbook-5.png) |
+| 룩북 예시 1 |                                  룩북 예시 2                                  |
+|:---:|:-------------------------------------------------------------------------:|
+| <img src="data/images/lookbooks/lookbook-2.png" width="400"> | <img src="data/images/lookbooks/lookbook-3.png" width="400" height="405"> |
 
 > 상품 이미지 + 모델 이미지를 n8n 워크플로우가 Gemini API로 전달 → 합성 결과 반환 → Spring Boot 콜백 수신
 
